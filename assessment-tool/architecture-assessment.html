@@ -23,259 +23,75 @@
     --border: #1e3a6e;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: var(--navy);
-    color: var(--text);
-    min-height: 100vh;
-  }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--navy); color: var(--text); min-height: 100vh; }
 
-  /* HEADER */
   .header {
     background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-light) 100%);
     border-bottom: 2px solid var(--gold);
     padding: 20px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
   }
-  .header-left h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.3px;
-  }
+  .header-left h1 { font-size: 1.5rem; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
   .header-left p { font-size: 0.8rem; color: var(--gold); margin-top: 3px; letter-spacing: 1px; text-transform: uppercase; }
-  .header-badge {
-    background: var(--gold);
-    color: var(--navy);
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 5px 12px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-  }
+  .header-badge { background: var(--gold); color: var(--navy); font-size: 0.7rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; letter-spacing: 0.5px; }
 
-  /* PROGRESS BAR */
-  .progress-wrap {
-    background: var(--navy-mid);
-    padding: 16px 40px;
-    border-bottom: 1px solid var(--border);
-  }
-  .progress-steps {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-  .step-dot {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    flex: 1;
-    min-width: 70px;
-    cursor: pointer;
-    opacity: 0.4;
-    transition: opacity 0.3s;
-  }
+  .progress-wrap { background: var(--navy-mid); padding: 16px 40px; border-bottom: 1px solid var(--border); }
+  .progress-steps { display: flex; gap: 4px; align-items: center; overflow-x: auto; padding-bottom: 4px; }
+  .step-dot { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; min-width: 70px; cursor: pointer; opacity: 0.4; transition: opacity 0.3s; }
   .step-dot.active { opacity: 1; }
   .step-dot.done { opacity: 0.75; }
-  .step-dot .dot {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: var(--navy-light);
-    border: 2px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; font-weight: 700;
-    transition: all 0.3s;
-  }
+  .step-dot .dot { width: 32px; height: 32px; border-radius: 50%; background: var(--navy-light); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; transition: all 0.3s; }
   .step-dot.active .dot { border-color: var(--gold); background: var(--gold); color: var(--navy); }
   .step-dot.done .dot { border-color: var(--green); background: var(--green); color: var(--navy); }
   .step-dot .label { font-size: 0.62rem; color: var(--text-muted); text-align: center; line-height: 1.2; white-space: nowrap; }
   .step-dot.active .label { color: var(--gold); }
   .step-connector { height: 2px; flex: 0.5; background: var(--border); margin-bottom: 18px; }
-  .progress-bar-track {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-top: 12px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--teal), var(--gold));
-    border-radius: 2px;
-    transition: width 0.5s ease;
-  }
+  .progress-bar-track { height: 3px; background: var(--border); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold)); border-radius: 2px; transition: width 0.5s ease; }
 
-  /* MAIN LAYOUT */
   .main { display: flex; min-height: calc(100vh - 145px); }
-  .sidebar {
-    width: 260px;
-    background: var(--navy-mid);
-    border-right: 1px solid var(--border);
-    padding: 24px 0;
-    flex-shrink: 0;
-  }
-  .sidebar-score {
-    padding: 0 20px 20px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-  }
+  .sidebar { width: 260px; background: var(--navy-mid); border-right: 1px solid var(--border); padding: 24px 0; flex-shrink: 0; }
+  .sidebar-score { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
   .sidebar-score h3 { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .overall-score-ring {
-    display: flex; align-items: center; gap: 12px;
-  }
-  .score-circle {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: conic-gradient(var(--teal) 0%, var(--border) 0%);
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-    flex-shrink: 0;
-  }
-  .score-circle::before {
-    content: '';
-    position: absolute;
-    width: 42px; height: 42px;
-    border-radius: 50%;
-    background: var(--navy-mid);
-  }
-  .score-circle span {
-    position: relative; z-index: 1;
-    font-size: 0.9rem; font-weight: 700; color: var(--teal);
-  }
+  .overall-score-ring { display: flex; align-items: center; gap: 12px; }
+  .score-circle { width: 56px; height: 56px; border-radius: 50%; background: conic-gradient(var(--teal) 0%, var(--border) 0%); display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
+  .score-circle::before { content: ''; position: absolute; width: 42px; height: 42px; border-radius: 50%; background: var(--navy-mid); }
+  .score-circle span { position: relative; z-index: 1; font-size: 0.9rem; font-weight: 700; color: var(--teal); }
   .score-info { flex: 1; }
   .score-info .score-val { font-size: 1.6rem; font-weight: 700; color: var(--text); line-height: 1; }
   .score-info .score-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
   .domain-list { padding: 0 8px; }
-  .domain-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-bottom: 3px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
+  .domain-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; margin-bottom: 3px; cursor: pointer; transition: background 0.2s; }
   .domain-item:hover { background: var(--navy-light); }
   .domain-item.active { background: rgba(201, 168, 76, 0.15); border-left: 3px solid var(--gold); }
   .domain-item.done { border-left: 3px solid var(--green); }
   .domain-icon { font-size: 1.1rem; width: 20px; text-align: center; }
   .domain-name { font-size: 0.78rem; color: var(--text); flex: 1; }
-  .domain-score-badge {
-    font-size: 0.68rem; font-weight: 700;
-    padding: 2px 7px; border-radius: 10px;
-    background: var(--border);
-    color: var(--text-muted);
-  }
+  .domain-score-badge { font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; background: var(--border); color: var(--text-muted); }
   .domain-score-badge.filled { background: var(--teal-dark); color: #fff; }
 
-  /* CONTENT AREA */
   .content { flex: 1; padding: 32px 40px; overflow-y: auto; }
-
-  /* DOMAIN HEADER */
-  .domain-header {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    margin-bottom: 28px;
-  }
+  .domain-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; }
   .domain-header-left h2 { font-size: 1.6rem; font-weight: 700; color: var(--text); }
-  .domain-header-left .domain-subtitle {
-    font-size: 0.8rem; color: var(--gold);
-    margin-top: 4px; text-transform: uppercase; letter-spacing: 0.8px;
-  }
-  .domain-header-left .domain-desc {
-    font-size: 0.85rem; color: var(--text-muted);
-    margin-top: 8px; max-width: 520px; line-height: 1.5;
-  }
-  .domain-progress-pill {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 6px 16px;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    white-space: nowrap;
-  }
+  .domain-header-left .domain-subtitle { font-size: 0.8rem; color: var(--gold); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .domain-header-left .domain-desc { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; max-width: 560px; line-height: 1.5; }
+  .domain-progress-pill { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
   .domain-progress-pill span { color: var(--gold); font-weight: 700; }
 
-  /* QUESTIONS */
-  .question-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 20px;
-    transition: border-color 0.3s;
-  }
+  .question-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; transition: border-color 0.3s; }
   .question-card.answered { border-color: rgba(46, 204, 113, 0.4); }
-  .question-card.answered .q-answered-badge {
-    display: inline-flex;
-  }
-  .q-header {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .q-num {
-    font-size: 0.68rem; color: var(--gold);
-    text-transform: uppercase; letter-spacing: 1px;
-    background: rgba(201, 168, 76, 0.1);
-    padding: 3px 10px; border-radius: 10px;
-    flex-shrink: 0; margin-right: 12px; margin-top: 1px;
-  }
+  .question-card.answered .q-answered-badge { display: inline-flex; }
+  .q-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+  .q-num { font-size: 0.68rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; background: rgba(201, 168, 76, 0.1); padding: 3px 10px; border-radius: 10px; flex-shrink: 0; margin-right: 12px; margin-top: 1px; }
   .q-text { font-size: 1rem; font-weight: 600; color: var(--text); flex: 1; line-height: 1.4; }
-  .q-answered-badge {
-    display: none;
-    align-items: center; gap: 4px;
-    font-size: 0.7rem; color: var(--green);
-    background: rgba(46, 204, 113, 0.1);
-    padding: 3px 10px; border-radius: 10px;
-    flex-shrink: 0;
-  }
-  .options-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 4px;
-  }
-  .option-btn {
-    background: var(--navy-mid);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-    display: flex; align-items: flex-start; gap: 10px;
-    position: relative;
-    overflow: hidden;
-  }
+  .q-answered-badge { display: none; align-items: center; gap: 4px; font-size: 0.7rem; color: var(--green); background: rgba(46, 204, 113, 0.1); padding: 3px 10px; border-radius: 10px; flex-shrink: 0; }
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+  .option-btn { background: var(--navy-mid); border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; cursor: pointer; transition: all 0.2s; text-align: left; display: flex; align-items: flex-start; gap: 10px; position: relative; overflow: hidden; }
   .option-btn:hover { border-color: var(--teal); background: rgba(0, 180, 216, 0.05); }
-  .option-btn.selected {
-    border-color: var(--teal);
-    background: rgba(0, 180, 216, 0.12);
-  }
-  .option-btn.selected::before {
-    content: '';
-    position: absolute; top: 0; left: 0;
-    width: 4px; height: 100%;
-    background: var(--teal);
-  }
-  .opt-score {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; font-weight: 700;
-    color: var(--text-muted);
-    flex-shrink: 0; margin-top: 1px;
-    transition: all 0.2s;
-  }
+  .option-btn.selected { border-color: var(--teal); background: rgba(0, 180, 216, 0.12); }
+  .option-btn.selected::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--teal); }
+  .opt-score { width: 28px; height: 28px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); flex-shrink: 0; margin-top: 1px; transition: all 0.2s; }
   .option-btn.selected .opt-score { background: var(--teal); color: white; }
-  .opt-score-1 { --sc: #e74c3c; }
-  .opt-score-2 { --sc: #f39c12; }
-  .opt-score-3 { --sc: #2ecc71; }
-  .opt-score-4 { --sc: #00b4d8; }
   .option-btn.selected.s1 .opt-score { background: #e74c3c; }
   .option-btn.selected.s2 .opt-score { background: #f39c12; }
   .option-btn.selected.s3 .opt-score { background: #2ecc71; }
@@ -285,35 +101,14 @@
   .opt-text { font-size: 0.83rem; color: var(--text); line-height: 1.35; }
   .opt-subtext { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; line-height: 1.3; }
 
-  /* SCORE BAR IN QUESTION */
-  .q-score-bar {
-    margin-top: 14px;
-    display: flex; align-items: center; gap: 10px;
-  }
+  .q-score-bar { margin-top: 14px; display: flex; align-items: center; gap: 10px; }
   .q-score-label { font-size: 0.72rem; color: var(--text-muted); width: 80px; }
-  .q-score-track {
-    flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
-  }
+  .q-score-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
   .q-score-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
   .q-score-val { font-size: 0.72rem; font-weight: 700; color: var(--text); width: 40px; text-align: right; }
 
-  /* NAVIGATION */
-  .nav-row {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: 32px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-  }
-  .btn {
-    padding: 11px 28px;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-    display: flex; align-items: center; gap: 8px;
-  }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .btn { padding: 11px 28px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
   .btn-primary { background: var(--gold); color: var(--navy); }
   .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
@@ -321,179 +116,83 @@
   .btn-secondary:hover { border-color: var(--text-muted); color: var(--text); }
   .btn-teal { background: var(--teal); color: white; }
   .btn-teal:hover { background: var(--teal-dark); }
-  .domain-completion {
-    font-size: 0.8rem; color: var(--text-muted);
-  }
+  .domain-completion { font-size: 0.8rem; color: var(--text-muted); }
   .domain-completion span { color: var(--gold); font-weight: 700; }
 
-  /* RESULTS PAGE */
   .results-page { display: none; padding: 32px 40px; }
-  .results-header {
-    text-align: center; margin-bottom: 40px;
-  }
-  .results-header h2 { font-size: 2rem; font-weight: 700; color: var(--text); }
-  .results-header p { font-size: 0.9rem; color: var(--text-muted); margin-top: 8px; }
-  .results-score-hero {
-    display: flex; justify-content: center; gap: 32px;
-    margin-bottom: 40px; flex-wrap: wrap;
-  }
-  .hero-metric {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 32px;
-    text-align: center;
-    min-width: 140px;
-  }
+  .results-score-hero { display: flex; justify-content: center; gap: 32px; margin-bottom: 40px; flex-wrap: wrap; }
+  .hero-metric { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px 32px; text-align: center; min-width: 140px; }
   .hero-metric .hm-val { font-size: 2.2rem; font-weight: 700; line-height: 1; }
   .hero-metric .hm-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.8px; }
   .hero-metric .hm-sub { font-size: 0.8rem; margin-top: 4px; }
-
-  .results-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
-    margin-bottom: 36px;
-  }
-  .chart-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-  }
-  .chart-card h3 {
-    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
-    color: var(--gold); margin-bottom: 20px;
-    display: flex; align-items: center; gap: 8px;
-  }
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 36px; }
+  .chart-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+  .chart-card h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
   .radar-wrap { height: 340px; position: relative; }
-
-  /* DOMAIN SCORES MINI */
   .domain-scores-list { display: flex; flex-direction: column; gap: 12px; }
-  .ds-row {
-    display: flex; align-items: center; gap: 12px;
-  }
+  .ds-row { display: flex; align-items: center; gap: 12px; }
   .ds-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
   .ds-name { font-size: 0.78rem; color: var(--text); width: 140px; flex-shrink: 0; }
-  .ds-bar-track {
-    flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden;
-    position: relative;
-  }
+  .ds-bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; position: relative; }
   .ds-bar-actual { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-  .ds-bar-bench {
-    position: absolute; top: 0; height: 100%;
-    border-right: 2px solid rgba(201, 168, 76, 0.6);
-    background: transparent;
-  }
+  .ds-bar-bench { position: absolute; top: 0; height: 100%; border-right: 2px solid rgba(201, 168, 76, 0.6); background: transparent; }
   .ds-scores { font-size: 0.72rem; white-space: nowrap; }
   .ds-actual { font-weight: 700; }
   .ds-bench { color: var(--text-muted); }
-
-  /* GAP TABLE */
-  .gap-section {
-    margin-bottom: 36px;
-  }
-  .gap-section h3 {
-    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
-    color: var(--gold); margin-bottom: 16px;
-    padding-bottom: 10px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
-  }
+  .gap-section { margin-bottom: 36px; }
+  .gap-section h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
   table { width: 100%; border-collapse: collapse; }
-  th {
-    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.8px;
-    color: var(--text-muted); padding: 10px 14px; text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
+  th { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
   td { padding: 12px 14px; border-bottom: 1px solid rgba(30, 58, 110, 0.5); font-size: 0.82rem; }
   tr:hover td { background: rgba(22, 32, 64, 0.5); }
-  .priority-badge {
-    padding: 3px 10px; border-radius: 12px;
-    font-size: 0.68rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.5px;
-  }
+  .priority-badge { padding: 3px 10px; border-radius: 12px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
   .p-critical { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
   .p-high { background: rgba(243, 156, 18, 0.2); color: #f39c12; }
   .p-medium { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
   .p-low { background: rgba(0, 180, 216, 0.2); color: #00b4d8; }
-  .gap-bar {
-    display: flex; align-items: center; gap: 8px;
-  }
+  .gap-bar { display: flex; align-items: center; gap: 8px; }
   .gap-val { font-weight: 700; width: 32px; }
   .gap-mini-bar { width: 80px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-  .gap-mini-fill { height: 100%; border-radius: 3px; background: var(--red); }
+  .gap-mini-fill { height: 100%; border-radius: 3px; }
   .rec-text { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
-
-  /* MATURITY LEVEL */
-  .maturity-banner {
-    border-radius: 12px; padding: 16px 24px;
-    display: flex; align-items: center; gap: 16px;
-    margin-bottom: 32px;
-  }
+  .maturity-banner { border-radius: 12px; padding: 16px 24px; display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
   .maturity-icon { font-size: 2rem; }
   .maturity-name { font-size: 1.2rem; font-weight: 700; }
   .maturity-desc { font-size: 0.82rem; margin-top: 3px; opacity: 0.8; }
-
   .btn-row { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
 
-  /* INTRO SCREEN */
-  .intro-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh;
-    text-align: center;
-    padding: 40px;
-  }
+  .intro-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 40px; }
   .intro-icon { font-size: 4rem; margin-bottom: 20px; }
   .intro-screen h2 { font-size: 2rem; font-weight: 700; margin-bottom: 12px; }
-  .intro-screen p { font-size: 0.95rem; color: var(--text-muted); max-width: 520px; line-height: 1.6; margin-bottom: 32px; }
+  .intro-screen p { font-size: 0.95rem; color: var(--text-muted); max-width: 540px; line-height: 1.6; margin-bottom: 32px; }
   .intro-tags { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 32px; }
-  .intro-tag {
-    background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 20px; padding: 6px 16px;
-    font-size: 0.75rem; color: var(--text-muted);
-    display: flex; align-items: center; gap: 6px;
-  }
-  .client-name-input {
-    background: var(--card-bg); border: 1.5px solid var(--border);
-    border-radius: 8px; padding: 11px 16px;
-    color: var(--text); font-size: 0.9rem; width: 320px;
-    margin-bottom: 20px; outline: none;
-    transition: border-color 0.2s;
-  }
+  .intro-tag { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+  .client-name-input { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 16px; color: var(--text); font-size: 0.9rem; width: 320px; margin-bottom: 20px; outline: none; transition: border-color 0.2s; }
   .client-name-input:focus { border-color: var(--gold); }
   .client-name-input::placeholder { color: var(--text-muted); }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-left">
     <h1>Banking Architecture Maturity Assessment</h1>
-    <p>BIAN Service Domain Model · TOGAF ADM · Industry Benchmarks</p>
+    <p>BIAN Service Domain Model · TOGAF ADM · Architecture Patterns</p>
   </div>
   <div class="header-badge">Client Workshop Tool</div>
 </div>
 
-<!-- PROGRESS -->
 <div class="progress-wrap" id="progressWrap">
   <div class="progress-steps" id="progressSteps"></div>
-  <div class="progress-bar-track">
-    <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
-  </div>
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
 </div>
 
-<!-- MAIN LAYOUT -->
 <div class="main" id="mainLayout">
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-score">
       <h3>Overall Score</h3>
       <div class="overall-score-ring">
-        <div class="score-circle" id="scoreCircle">
-          <span id="scoreCircleText">0</span>
-        </div>
+        <div class="score-circle" id="scoreCircle"><span id="scoreCircleText">0</span></div>
         <div class="score-info">
           <div class="score-val" id="overallScoreVal">0.0</div>
           <div class="score-label">out of 10.0</div>
@@ -503,30 +202,24 @@
     <div class="domain-list" id="domainList"></div>
   </div>
 
-  <!-- CONTENT -->
   <div class="content" id="contentArea">
-    <!-- Intro -->
     <div class="intro-screen" id="introScreen">
       <div class="intro-icon">🏦</div>
       <h2>Architecture Maturity Assessment</h2>
-      <p>Evaluate your bank's technology architecture across 8 critical domains. Each answer is scored against industry benchmarks to reveal where you stand — and where to focus next.</p>
+      <p>Evaluate your bank's technology architecture across 8 domains grounded in BIAN Service Domain model, TOGAF ADM, and proven architecture patterns. Each answer is benchmarked against industry standards to pinpoint your path forward.</p>
       <div class="intro-tags">
         <div class="intro-tag">📊 8 Domains</div>
-        <div class="intro-tag">❓ 24 Questions</div>
-        <div class="intro-tag">⏱ ~10 Minutes</div>
+        <div class="intro-tag">❓ 32 Questions</div>
+        <div class="intro-tag">⏱ ~15 Minutes</div>
         <div class="intro-tag">📈 Radar + Gap Analysis</div>
       </div>
       <input class="client-name-input" id="clientNameInput" type="text" placeholder="Client / Bank Name (optional)" />
-      <button class="btn btn-teal" onclick="startAssessment()" style="font-size:1rem;padding:14px 40px;">
-        Begin Assessment →
-      </button>
+      <button class="btn btn-teal" onclick="startAssessment()" style="font-size:1rem;padding:14px 40px;">Begin Assessment →</button>
     </div>
-    <!-- Questions injected here -->
     <div id="questionArea" style="display:none;"></div>
   </div>
 </div>
 
-<!-- RESULTS PAGE -->
 <div class="results-page" id="resultsPage"></div>
 
 <script>
@@ -535,35 +228,44 @@ const DOMAINS = [
     id: 'core',
     icon: '🏛',
     name: 'Core Banking',
-    subtitle: 'BIAN Service Domain Coverage',
-    desc: 'Coverage and decomposition of core banking capabilities aligned to BIAN service domains.',
+    subtitle: 'BIAN Service Domain Decomposition',
+    desc: 'Assess how well your core banking estate maps to BIAN Service Domains and your readiness to move from a monolithic architecture to a composable, event-driven model.',
     benchmark: 8.0,
     questions: [
       {
-        text: 'How would you describe your current core banking system architecture?',
+        text: 'How independently are your Product Directory and Product Design capabilities managed from your core account processing engine?',
         options: [
-          { score: 1, level: 'Level 1 — Legacy', text: 'Monolithic core', sub: 'Single system handles all banking functions; changes require vendor releases' },
-          { score: 2, level: 'Level 2 — Modular', text: 'Partially separated modules', sub: 'Some products are isolated but share the same database and release cycle' },
-          { score: 3, level: 'Level 3 — Component-based', text: 'BIAN-aligned components', sub: 'Most capabilities map to dedicated components with defined interfaces' },
-          { score: 4, level: 'Level 4 — Composable', text: 'Independently deployable domains', sub: 'Each BIAN service domain is a deployable unit with its own API and data store' }
+          { score: 1, level: 'Level 1 — No separation', text: 'Product logic hard-coded in core', sub: 'Product rules embedded in the core system; Product Directory and Product Design are not distinguishable capabilities; every product change requires a vendor release' },
+          { score: 2, level: 'Level 2 — Parameter tables', text: 'Configuration within vendor parameters', sub: 'Products configured via parameter tables but still within the vendor\'s release boundary; no external product catalogue API; novel products require vendor professional services' },
+          { score: 3, level: 'Level 3 — API-exposed catalogue', text: 'Product Directory exposed as a standalone API', sub: 'Product Directory available as a versioned API; product configuration possible without a core release; Product Design workflow partially automated' },
+          { score: 4, level: 'Level 4 — Composable Banking', text: 'Product Directory and Design independently deployable', sub: 'BIAN Product Directory and Product Design are distinct, independently deployable services; channels consume product APIs; new variants assembled from components; no vendor dependency for standard products' }
         ]
       },
       {
-        text: 'How are banking products defined and managed?',
+        text: 'How tightly coupled is your core banking system to your channel delivery and integration landscape?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Hard-coded in core system', sub: 'Product changes require code releases from the vendor' },
-          { score: 2, level: 'Level 2', text: 'Configurable via parameters', sub: 'Parameter tables allow some product configuration without code changes' },
-          { score: 3, level: 'Level 3', text: 'Business rules engine', sub: 'Configurable product engine with workflow automation and business rules' },
-          { score: 4, level: 'Level 4', text: 'Composable product catalogue', sub: 'Products assembled from reusable, versioned capability components' }
+          { score: 1, level: 'Level 1 — Fully coupled', text: 'Core release freezes all channel development', sub: 'All channel, API, and integration changes require a core banking release; single shared release train every 6–12 months; velocity is entirely vendor-constrained' },
+          { score: 2, level: 'Level 2 — Partially coupled', text: 'Minor channel changes possible between core releases', sub: 'Some channel changes proceed between core releases; major upgrades still impose a cross-team freeze; no stable, versioned API contracts' },
+          { score: 3, level: 'Level 3 — Two-Speed Architecture', text: 'Versioned API contracts enable independent channel release', sub: 'Channels and integrations consume stable, backward-compatible API contracts; digital layer deploys independently; core remains on a slower, governed release cycle' },
+          { score: 4, level: 'Level 4 — Headless Core', text: 'Each BIAN domain independently deployable', sub: 'BIAN Service Domains (Current Account, Savings Account, Credit Facility) each have their own API, data store, and CI/CD pipeline; channels subscribe to domain events; no coordinated releases required' }
         ]
       },
       {
-        text: 'How does your General Ledger integrate with banking operations?',
+        text: 'How does your core banking estate propagate state changes to channels, analytics, and downstream systems?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Part of the monolith', sub: 'GL is embedded within the core banking system; no separation' },
-          { score: 2, level: 'Level 2', text: 'Nightly batch integration', sub: 'Separate GL system updated via end-of-day batch files' },
-          { score: 3, level: 'Level 3', text: 'Real-time API posting', sub: 'Transactions post to GL in real-time via API or messaging layer' },
-          { score: 4, level: 'Level 4', text: 'Event-sourced accounting', sub: 'Immutable accounting entries generated from every domain event; full audit trail' }
+          { score: 1, level: 'Level 1 — Batch only', text: 'Nightly file extracts; all consumers on T+1 data', sub: 'Downstream systems depend on batch feeds; no real-time balance or transaction visibility; BIAN Notify service operations do not exist' },
+          { score: 2, level: 'Level 2 — API polling', text: 'Channels poll core APIs; no domain events published', sub: 'Real-time balance available via query; no event publishing; significant polling overhead and latency; tight temporal coupling' },
+          { score: 3, level: 'Level 3 — Domain event publishing', text: 'Key BIAN Notify operations implemented on an event stream', sub: 'Core banking publishes events for key state changes (balance updated, transaction posted); event streaming platform in place; consumers subscribe to specific domain events' },
+          { score: 4, level: 'Level 4 — Event-Driven Architecture', text: 'Every BIAN state change is a domain event', sub: 'Full EDA backbone — every BIAN Service Operation that mutates state publishes a BIAN-compliant domain event; producers and consumers fully decoupled; Kafka or equivalent; consumers subscribe independently' }
+        ]
+      },
+      {
+        text: 'How structured is your core banking modernisation strategy, and what is your path from monolith to composable?',
+        options: [
+          { score: 1, level: 'Level 1 — No strategy', text: 'Fully vendor-dependent; no internal architecture capability', sub: 'All change — product, process, and regulatory — requires vendor professional services; upgrade path dictated solely by vendor roadmap; no Architecture Review Board' },
+          { score: 2, level: 'Level 2 — Tactical extraction', text: 'Ad hoc capabilities extracted with no BIAN alignment', sub: 'Some capabilities built outside core but with no coherent pattern or BIAN alignment; risk of fragmentation and shadow IT; no governed migration plan' },
+          { score: 3, level: 'Level 3 — Strangler Fig in progress', text: 'Incremental BIAN-aligned services with facade routing', sub: 'Strangler Fig pattern applied; new BIAN-aligned services deployed incrementally; facade routes traffic progressively; extraction prioritised by domain change frequency and business value' },
+          { score: 4, level: 'Level 4 — Architecture-led transformation', text: 'BIAN target state with TOGAF Phase E roadmap and ARB governance', sub: 'BIAN target architecture formally defined and governed; Strangler Fig roadmap with TOGAF Phase E delivery plan; each BIAN Service Domain has a defined migration timeline; Architecture Review Board governs delivery compliance' }
         ]
       }
     ]
@@ -572,35 +274,44 @@ const DOMAINS = [
     id: 'payments',
     icon: '💳',
     name: 'Payments',
-    subtitle: 'Payment Rails & Open Banking',
-    desc: 'Real-time payment capability, rail coverage, and PSD2/Open Banking readiness.',
+    subtitle: 'BIAN Payment Execution · Rail Agility · Compliance',
+    desc: 'Assess your BIAN Payment Execution domain coverage, ability to add new rails, reconciliation automation, and compliance architecture readiness.',
     benchmark: 9.0,
     questions: [
       {
-        text: 'What payment rails do you currently support?',
+        text: 'How complete is your BIAN Payment Execution domain coverage, and what processing model does it support?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Legacy batch only', sub: 'SWIFT MT / SEPA Credit Transfer — end-of-day settlement only' },
-          { score: 2, level: 'Level 2', text: 'Near real-time', sub: 'SEPA Credit Transfer with same-day value; basic SWIFT gpi tracking' },
-          { score: 3, level: 'Level 3', text: 'Real-time payments', sub: 'SEPA Instant (SCT Inst) and TIPS access; compliance with EU IPR mandate' },
-          { score: 4, level: 'Level 4', text: 'Multi-rail platform', sub: 'SEPA Inst, SWIFT gpi, domestic RT rails, cross-border with ISO 20022 MX end-to-end' }
+          { score: 1, level: 'Level 1 — Batch ACH only', text: 'Payment Execution operates end-of-day; real-time sub-domains absent', sub: 'ACH Fulfillment domain only; real-time domestic rails, SWIFT Funds Transfer, and Card Transaction domains absent or incomplete; no irrevocability guarantee' },
+          { score: 2, level: 'Level 2 — Near-real-time', text: 'Same-day settlement; Payment Initiation and Execution not separated', sub: 'Same-day ACH or domestic instant available; SWIFT gpi basic tracking; BIAN Payment Initiation and Payment Execution not yet separated as distinct domains' },
+          { score: 3, level: 'Level 3 — Real-time domestic', text: 'Instant rails live; BIAN Payment Initiation and Execution separated', sub: 'Real-time domestic rails operational; BIAN Payment Initiation and Payment Execution are distinct, governed capabilities; sub-10-second end-to-end processing' },
+          { score: 4, level: 'Level 4 — Multi-rail Payment Platform', text: 'All rails as pluggable adapters to a single BIAN Payment Execution domain', sub: 'Real-time domestic, SWIFT MX, ACH, and Card Transaction domains operate as pluggable adapters; ISO 20022 native data model; new rail added without touching existing rails or core' }
         ]
       },
       {
-        text: 'What is your Open Banking / PSD2 capability?',
+        text: 'How does your payment architecture support adding new rails and payment methods — and what is the current time and cost to do so?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Not implemented', sub: 'No PSD2 API layer; TPP access not available or compliance exposure exists' },
-          { score: 2, level: 'Level 2', text: 'Compliance bolt-on', sub: 'Minimal AIS/PIS layer to meet regulatory deadline; limited functionality' },
-          { score: 3, level: 'Level 3', text: 'Dedicated PSD2 Hub', sub: 'AIS/PIS/CIAF APIs, consent management, basic developer onboarding' },
-          { score: 4, level: 'Level 4', text: 'Open Banking Platform', sub: 'Developer portal, FAPI 2.0, monetized APIs, dynamic linking, full consent lifecycle' }
+          { score: 1, level: 'Level 1 — 12–24+ months', text: 'Each rail is a bespoke integration requiring core banking changes', sub: 'New corridors require core banking modifications and multi-year vendor involvement; high cost; full regression suite; BIAN Payment Order domain tightly coupled to rail-specific logic' },
+          { score: 2, level: 'Level 2 — 6–12 months', text: 'Middleware reduces effort but custom mapping remains per rail', sub: 'Integration middleware provides some reuse; each rail still requires significant custom mapping and multi-team regression testing; BIAN Payment Order domain not yet cleanly separated' },
+          { score: 3, level: 'Level 3 — 3–6 months', text: 'Payment orchestration separates BIAN Payment Order from rail adapters', sub: 'Payment hub separates BIAN Payment Order management from rail-specific execution; standard onboarding certification; new rail does not touch existing rails or core banking' },
+          { score: 4, level: 'Level 4 — Weeks', text: 'Pluggable adapter pattern; BIAN Payment Order, Initiation, Execution cleanly separated', sub: 'Microservices-based Payment Execution with pluggable rail adapters; BIAN Payment Order, Initiation, and Execution independently deployable; automated rail certification and regression suite; new corridor is a new adapter deployment only' }
         ]
       },
       {
-        text: 'How do you screen payments for fraud and financial crime?',
+        text: 'How automated is payment exception management, reconciliation, and repair across your BIAN Payment Order and Nostro Management domains?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Manual / batch review', sub: 'Periodic spot checks; no real-time screening capability' },
-          { score: 2, level: 'Level 2', text: 'Rule-based screening', sub: 'Static thresholds and rules applied at initiation' },
-          { score: 3, level: 'Level 3', text: 'Real-time ML scoring', sub: 'Inline ML model scoring within payment flow; < 200ms response time' },
-          { score: 4, level: 'Level 4', text: 'Adaptive intelligence', sub: 'Behavioral biometrics, network graph analysis, adaptive model retraining' }
+          { score: 1, level: 'Level 1 — Manual and multi-day', text: 'BIAN Nostro Management absent; exceptions via email and spreadsheet', sub: 'Nostro Management domain absent or paper-based; reconciliation is a multi-day manual process; payment repair requires core banking IT access; no SLA-driven exception workflow' },
+          { score: 2, level: 'Level 2 — Partially automated', text: 'Reconciliation tooling exists but significant manual handling remains', sub: 'Matching tooling reduces manual effort; exception management has no unified BIAN Payment Order tracking; SLA-driven workflow missing; operations cannot initiate repair without IT' },
+          { score: 3, level: 'Level 3 — Automated reconciliation', text: 'Automated matching; operations-managed repair; SLA visibility via Payment Order', sub: 'Automated matching covers majority of volume; SLA-driven exception workflow integrated with BIAN Payment Order lifecycle tracking; operations staff can initiate repair without IT involvement' },
+          { score: 4, level: 'Level 4 — Predictive exception prevention', text: 'AI-assisted classification; real-time Nostro position; near-zero manual intervention', sub: 'AI-assisted exception detection and root cause classification; BIAN Nostro Management domain provides real-time reconciliation position; completed automatically from event log; treasury has live Nostro visibility' }
+        ]
+      },
+      {
+        text: 'How architecturally embedded are your BIAN compliance service domains (AML, Fraud Detection, Regulatory Compliance) in the payment processing flow?',
+        options: [
+          { score: 1, level: 'Level 1 — Compliance bolt-on', text: 'AML and Fraud Detection run as separate batch jobs outside the payment flow', sub: 'BIAN AML and Fraud Detection domains absent or operating as periodic batch jobs; compliance changes are disruptive project work; no BIAN Regulatory Compliance domain separation' },
+          { score: 2, level: 'Level 2 — Checkpoint compliance', text: 'AML and fraud scoring at payment initiation but architecturally separate', sub: 'Inline screening applied at BIAN Payment Initiation but AML/fraud logic is a dependency rather than a subscribed service; PSD2/Open Banking limited to the regulatory minimum' },
+          { score: 3, level: 'Level 3 — Compliance by design', text: 'BIAN AML, Fraud Detection, and Regulatory Compliance integrated inline', sub: 'Compliance domains subscribe to payment events; ISO 20022 native data model; dedicated PSD2 hub with AIS/PIS APIs; BIAN Regulatory Reporting domain implemented' },
+          { score: 4, level: 'Level 4 — Compliance-native event platform', text: 'Compliance domains subscribe to payment events; FATF-aligned; FAPI 2.0', sub: 'All BIAN compliance domains subscribe to Payment Execution events independently; real-time sanctions screening (< 200ms); Regulatory Reporting auto-generated from event log; FATF-aligned AML; full FAPI 2.0 Open Banking with developer ecosystem' }
         ]
       }
     ]
@@ -609,35 +320,44 @@ const DOMAINS = [
     id: 'lending',
     icon: '📋',
     name: 'Lending & Credit',
-    subtitle: 'Origination, Scoring & Collateral',
-    desc: 'Loan origination automation, credit decision capability, and collateral management maturity.',
+    subtitle: 'BIAN Credit Management · Lifecycle Integration',
+    desc: 'Assess your BIAN Credit Management domain maturity, policy change agility, lifecycle integration across lending domains, and operational process dependency.',
     benchmark: 7.5,
     questions: [
       {
-        text: 'How is loan origination handled end-to-end?',
+        text: 'How mature is your BIAN Credit Management domain, and how does it determine time-to-decision across your lending segments?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Manual / paper-based', sub: 'Application forms, manual review, spreadsheet tracking' },
-          { score: 2, level: 'Level 2', text: 'Core banking origination', sub: 'Basic origination module in core banking with limited workflow automation' },
-          { score: 3, level: 'Level 3', text: 'Dedicated LOS with STP', sub: 'Workflow-driven LOS with straight-through processing for eligible applications' },
-          { score: 4, level: 'Level 4', text: 'AI-driven origination', sub: '70%+ STP, integrated bureau, instant decisions, mobile-first borrower journey' }
+          { score: 1, level: 'Level 1 — Not a distinct domain', text: 'Credit policy embedded in the loan system; decisions take days to weeks', sub: 'BIAN Credit Management not separated from Consumer Loan or Corporate Loan domains; credit policy embedded in origination system or manual process; no policy engine; underwriting is fully manual' },
+          { score: 2, level: 'Level 2 — Rule-based Credit Management', text: 'Parameterised eligibility rules with bureau integration; hours to days', sub: 'BIAN Credit Management emerging as a capability; rule-based eligibility with credit bureau integration; some automation but manual underwriter review required for most decisions' },
+          { score: 3, level: 'Level 3 — Business rules engine', text: 'BIAN Credit Management separated from Consumer/Corporate Loan; minutes', sub: 'BIAN Credit Management is a distinct, business-owned domain; rules engine gives credit team direct policy control; automated decisions for standard retail products; minutes for eligible customers' },
+          { score: 4, level: 'Level 4 — ML-driven Credit Management', text: 'Real-time ML scoring; BIAN domains independently deployable; 70%+ STP', sub: 'BIAN Credit Management, Limit Management, and Consumer Loan independently deployable; real-time ML scoring with open banking feeds; 70%+ straight-through processing; human review only for regulated exceptions' }
         ]
       },
       {
-        text: 'What is your credit decision capability?',
+        text: 'How quickly can your BIAN Credit Management domain\'s policies be updated without an IT release?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Manual credit committee', sub: 'Decisions made by credit officers; no automated scoring' },
-          { score: 2, level: 'Level 2', text: 'Rule-based scoring', sub: 'Static eligibility criteria and threshold rules applied to applications' },
-          { score: 3, level: 'Level 3', text: 'Statistical scoring models', sub: 'Logistic regression / scorecard models with credit bureau integration' },
-          { score: 4, level: 'Level 4', text: 'Dynamic ML scoring', sub: 'Real-time ML with alternative data, open banking feeds, DBR compliance engine' }
+          { score: 1, level: 'Level 1 — Months', text: 'Policy changes require IT development and vendor involvement', sub: 'Business has no direct access to credit rules; every policy change requires an IT project and full regression cycle; no simulation capability' },
+          { score: 2, level: 'Level 2 — Weeks', text: 'Parameterised adjustments possible; complex changes still need IT', sub: 'Minor eligibility adjustments possible via parameters; complex changes still require IT involvement; no back-testing or impact simulation before deployment' },
+          { score: 3, level: 'Level 3 — Days', text: 'Rules engine exposes a policy configuration API; simulation available', sub: 'Credit team has direct control over BIAN Credit Management domain policies via a configuration API; simulation and champion/challenger testing available before deployment; changes are fully auditable' },
+          { score: 4, level: 'Level 4 — Real-time with automated governance', text: 'ML policy engine; champion/challenger at scale; full audit trail', sub: 'Automated policy engine with ML model governance; champion/challenger framework tests changes at scale with live data; BIAN Credit Management domain fully event-driven; regulatory audit trail generated automatically from every policy change' }
         ]
       },
       {
-        text: 'How do you manage collateral and security interests?',
+        text: 'How integrated are your BIAN lending service domains across the full credit lifecycle — origination through collections?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Spreadsheet-based', sub: 'No system integration; manual tracking and valuation' },
-          { score: 2, level: 'Level 2', text: 'Core banking module', sub: 'Basic collateral registration within core banking; manual valuations' },
-          { score: 3, level: 'Level 3', text: 'Dedicated collateral system', sub: 'Automated valuation links, collateral coverage alerts, legal charge tracking' },
-          { score: 4, level: 'Level 4', text: 'Integrated collateral engine', sub: 'Real-time external valuation feeds, covenant monitoring, cross-collateralisation' }
+          { score: 1, level: 'Level 1 — Fully siloed', text: 'Consumer Loan, Delinquency Management, Collateral Management — no real-time sharing', sub: 'BIAN lending domains operate as completely separate systems; risk reporting requires manual aggregation from multiple systems; Delinquency Management triggered by batch rather than lifecycle events' },
+          { score: 2, level: 'Level 2 — Batch-integrated', text: 'Nightly transfers between BIAN lending domains; T+1 portfolio view', sub: 'Nightly data transfers connect BIAN lending domains; Delinquency Management triggered by scheduled batch; Collateral Management not linked to Limit Management in real-time' },
+          { score: 3, level: 'Level 3 — API-integrated lifecycle', text: 'BIAN lending domains exchange data near-real-time via APIs', sub: 'Key BIAN lending domains (Consumer Loan, Collateral Management, Delinquency Management, Limit Management) exchange data near-real-time via APIs; Delinquency Management triggered by servicing events; intraday portfolio dashboards' },
+          { score: 4, level: 'Level 4 — Event-driven lending platform', text: 'All BIAN lending events on event stream; domains subscribe independently', sub: 'All BIAN lending domain state changes (origination, drawdown, repayment, delinquency, write-off) published as domain events; Delinquency Management, Credit Risk Management, and Regulatory Reporting subscribe independently; real-time portfolio visibility with no reconciliation lag' }
+        ]
+      },
+      {
+        text: 'What proportion of your lending operations remain people-dependent, and how does this affect BIAN domain resilience and regulatory risk?',
+        options: [
+          { score: 1, level: 'Level 1 — 80–100% manual', text: 'Consumer Loan and Corporate Loan processing almost entirely manual', sub: 'Majority of credit decisions, servicing actions, and collections require human intervention; key-person dependency undermines BIAN domain resilience; inconsistent outcomes increase regulatory risk' },
+          { score: 2, level: 'Level 2 — 50–80% manual', text: 'Retail partially automated; SME/corporate almost entirely manual', sub: 'Standard retail products partially automated; SME and corporate lending almost entirely manual; BIAN Delinquency Management initiated manually; audit trail gaps in manual steps' },
+          { score: 3, level: 'Level 3 — 20–50% manual', text: 'Retail largely automated; BIAN domain boundaries enforced by systems', sub: 'Retail lending largely automated; standard servicing and renewal automated; BIAN domain boundaries enforced by systems not individuals; complete audit trail; manual work concentrated in complex SME/corporate cases' },
+          { score: 4, level: 'Level 4 — Under 20% manual', text: 'Automated across BIAN Consumer Loan, Collateral, and Delinquency domains', sub: 'Automated across BIAN Consumer Loan, Collateral Management, and Delinquency Management for most segments; explainability built into automated decisions for regulatory review; human decisions reserved for regulated exceptions only' }
         ]
       }
     ]
@@ -646,35 +366,44 @@ const DOMAINS = [
     id: 'integration',
     icon: '🔗',
     name: 'Integration & APIs',
-    subtitle: 'API Maturity & Event Architecture',
-    desc: 'Integration patterns, API governance, and microservices decomposition aligned to BIAN boundaries.',
+    subtitle: 'BIAN Service Operations · EDA · Resilience',
+    desc: 'Assess BIAN Service Operation API coverage, integration resilience patterns, API design standards, and the balance between synchronous and event-driven architecture.',
     benchmark: 8.0,
     questions: [
       {
-        text: 'What is your primary integration pattern across systems?',
+        text: 'How completely are BIAN Service Operations exposed as APIs, and how quickly can a new system or channel integrate?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Point-to-point', sub: 'Direct database connections, file transfers, no central integration governance' },
-          { score: 2, level: 'Level 2', text: 'ESB / Middleware', sub: 'Centralised integration bus with message transformation and routing' },
-          { score: 3, level: 'Level 3', text: 'API-led connectivity', sub: 'System / Process / Experience API tiers with a managed API gateway' },
-          { score: 4, level: 'Level 4', text: 'Event-driven + API', sub: 'Kafka event backbone for async flows; BIAN-compliant REST APIs for synchronous' }
+          { score: 1, level: 'Level 1 — 6–18 months', text: 'Bespoke point-to-point; BIAN Service Operations not exposed as APIs', sub: 'Each integration is a bespoke project; no API catalogue; consuming systems hardwired to core; BIAN Initiate, Retrieve, and Execute operations not exposed as governed APIs' },
+          { score: 2, level: 'Level 2 — 3–6 months', text: 'Middleware with some BIAN domains exposed as REST APIs inconsistently', sub: 'Integration middleware reduces bespoke work; some BIAN domains exposed as REST APIs but inconsistently; no developer portal or sandbox; no documented BIAN Service Operation alignment' },
+          { score: 3, level: 'Level 3 — 4–12 weeks', text: 'API-led connectivity; key BIAN Service Operations documented and gateway-managed', sub: 'API-led connectivity with a governed catalogue; key BIAN Service Operations (Initiate, Retrieve, Execute) documented and managed via API gateway; sandbox testing available; standard onboarding process' },
+          { score: 4, level: 'Level 4 — Days', text: 'Full BIAN Service Operation coverage; self-service portal; time-to-first-call tracked', sub: 'Full BIAN Service Operation coverage (Initiate, Update, Retrieve, Execute, Notify, Evaluate) across all in-scope domains; self-service developer portal with interactive sandbox; event subscriptions for Notify operations; time-to-first-call tracked as a KPI' }
         ]
       },
       {
-        text: 'How mature is your API management capability?',
+        text: 'How resilient is your integration layer when a BIAN service domain becomes unavailable or degraded?',
         options: [
-          { score: 1, level: 'Level 1', text: 'No API management', sub: 'Ad hoc integration; no central gateway or API governance' },
-          { score: 2, level: 'Level 2', text: 'Basic API gateway', sub: 'Authentication and routing; no versioning, lifecycle management, or developer portal' },
-          { score: 3, level: 'Level 3', text: 'Full API lifecycle', sub: 'Versioning, documentation, rate limiting, monitoring, developer onboarding' },
-          { score: 4, level: 'Level 4', text: 'API platform', sub: 'Developer portal, analytics, monetization, sandbox environments, API marketplace' }
+          { score: 1, level: 'Level 1 — Cascading failures', text: 'BIAN domain unavailability propagates to all consumers; manual restart', sub: 'No circuit breaking or bulkhead patterns; BIAN domain failure cascades to all consuming systems; recovery requires manual restart in the correct sequence' },
+          { score: 2, level: 'Level 2 — Some graceful degradation', text: 'Retry logic exists; no circuit breaker; recovery largely manual', sub: 'Some retry logic in specific integrations; no circuit breaker or bulkhead pattern enforced at API gateway; BIAN domain recovery is slow and often manual' },
+          { score: 3, level: 'Level 3 — Isolated failures', text: 'Circuit breaking and bulkheads at API gateway; automated recovery', sub: 'API gateway enforces circuit breaking and bulkhead patterns per BIAN domain; consuming systems degrade gracefully; automated recovery with SLA-based alerting on domain availability' },
+          { score: 4, level: 'Level 4 — Resilient by design', text: 'Event-driven architecture; consumers replay from event log on recovery', sub: 'Event-driven architecture decouples producers from consumers; BIAN domain unavailability does not propagate to consumers; consumers replay from event log on recovery; standard outages resolved without manual intervention; 99.99% effective availability' }
         ]
       },
       {
-        text: 'How far has your microservices / domain decomposition progressed?',
+        text: 'How consistently do your APIs follow BIAN Service Operation patterns, and are the four API security layers applied across your integration landscape?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Monolithic applications', sub: 'No service decomposition; all functions in a single deployable unit' },
-          { score: 2, level: 'Level 2', text: 'Mixed architecture', sub: 'Some services extracted; monolith still handles majority of functions' },
-          { score: 3, level: 'Level 3', text: 'Domain-driven services', sub: 'Services aligned to business capabilities with defined contracts and boundaries' },
-          { score: 4, level: 'Level 4', text: 'BIAN-aligned microservices', sub: 'Each BIAN domain independently deployable; service mesh; contract testing' }
+          { score: 1, level: 'Level 1 — No standards', text: 'APIs created ad hoc; BIAN semantics not followed; no security layers', sub: 'APIs created without consistent conventions; BIAN Service Operation semantics (Initiate, Update, Retrieve, Execute) not followed; no consistent auth, versioning, or error handling; breaking changes without notice; WAF and OAuth absent' },
+          { score: 2, level: 'Level 2 — Informal conventions', text: 'Some REST conventions; partial OAuth; no BIAN alignment; no mTLS', sub: 'Some REST naming conventions followed; partial OAuth deployment; no BIAN Service Operation alignment; no design review process; no mTLS between services; PII not encrypted at field level' },
+          { score: 3, level: 'Level 3 — BIAN-aligned with three security layers', text: 'BIAN operation semantics; OAuth/mTLS; OWASP Top 10; design review gates', sub: 'API design references BIAN Service Operation semantics; OAuth 2.0/OIDC, JWT validation, and mTLS between services implemented; OWASP Top 10 compliance verified; input/output validation standards; design review gates before publication' },
+          { score: 4, level: 'Level 4 — All four layers with automated governance', text: 'WAF, OAuth, mTLS, field-level encryption; SAST/DAST in CI/CD; portal', sub: 'All four API security layers applied — edge (WAF), gateway (OAuth/JWT), service-to-service (mTLS), and data (field-level PII encryption, card tokenisation); SAST/DAST/SCA in every build; OpenAPI auto-generated; breaking changes blocked at pipeline; developer portal with sandbox' }
+        ]
+      },
+      {
+        text: 'How well does your integration architecture apply Event-Driven Architecture for BIAN Notify operations vs. synchronous APIs for Execute and Retrieve?',
+        options: [
+          { score: 1, level: 'Level 1 — Synchronous only', text: 'All BIAN domain interactions are synchronous REST/SOAP; Notify not implemented', sub: 'All integration is synchronous REST or SOAP; BIAN Notify service operations not implemented; high temporal coupling; systems sensitive to upstream latency and availability; < 200ms P95 target not consistently met' },
+          { score: 2, level: 'Level 2 — Tactical queuing', text: 'Message queues introduced ad hoc; no architectural principle for async vs sync', sub: 'Message queues introduced for specific high-load scenarios; no architectural principle governing when to use synchronous vs. asynchronous BIAN operations; EDA partial and ungoverned' },
+          { score: 3, level: 'Level 3 — Pattern-governed', text: 'Documented principles; sync for Execute/Retrieve; async for Notify; EDA in place', sub: 'Documented principles distinguish sync (Execute, Retrieve operations requiring immediate response) from async (Notify operations for state change propagation); event streaming platform operational for key BIAN domains; < 200ms P95 for synchronous APIs' },
+          { score: 4, level: 'Level 4 — Event-first with full BIAN alignment', text: 'BIAN Notify operations as domain events; full Service Operation coverage', sub: 'BIAN Notify operations implemented as domain events on streaming backbone (Kafka or equivalent); Retrieve and Execute via synchronous API at < 200ms P95; full BIAN Service Operation coverage; all consumers subscribe to events independently; no polling anywhere' }
         ]
       }
     ]
@@ -683,35 +412,44 @@ const DOMAINS = [
     id: 'data',
     icon: '📊',
     name: 'Data & Analytics',
-    subtitle: 'Data Architecture & Intelligence',
-    desc: 'Data platform maturity, master data management, and analytics / AI capability.',
+    subtitle: 'BIAN Data Domains · CDM · ML Readiness',
+    desc: 'Assess data freshness from BIAN domains, Canonical Data Model maturity, business self-service, and AI/ML infrastructure readiness for regulated domains.',
     benchmark: 7.0,
     questions: [
       {
-        text: 'What is your data architecture and processing capability?',
+        text: 'How quickly is data from BIAN service domains available for business decisions, and is a Canonical Data Model in place?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Operational data only', sub: 'No analytics layer; reporting extracted directly from operational systems' },
-          { score: 2, level: 'Level 2', text: 'Data warehouse', sub: 'Batch nightly loads to a central DW; T+1 reporting only' },
-          { score: 3, level: 'Level 3', text: 'Data lake + DW', sub: 'Batch and some streaming; near-real-time analytics; basic ML workloads' },
-          { score: 4, level: 'Level 4', text: 'Unified data platform', sub: 'Real-time streaming (Kafka/Flink), ML feature store, data mesh, lakehouse architecture' }
+          { score: 1, level: 'Level 1 — T+1 everywhere; no CDM', text: 'BIAN domains store data internally; downstream systems on nightly batch', sub: 'All BIAN domains publish no events; downstream systems (reporting, analytics, channels) depend entirely on nightly batch extracts; no Canonical Data Model defined; different systems report different figures for the same entity' },
+          { score: 2, level: 'Level 2 — Intraday with lag; informal CDM', text: 'Scheduled micro-batch or polling; CDM informally defined but not enforced', sub: 'Intraday feeds or API polling reduce lag to hours for key entities; real-time balance queries possible for some BIAN domains; CDM informally defined but not enforced across domain boundaries' },
+          { score: 3, level: 'Level 3 — Near-real-time with governed CDM', text: 'Domain events feed streaming platform; Party Data Management as master', sub: 'BIAN domain events feed a streaming platform; key BIAN entities (Account, Transaction, Customer) defined in a governed Canonical Data Model; BIAN Party Data Management is the authoritative source; quality checks automated' },
+          { score: 4, level: 'Level 4 — Real-time data platform', text: 'Sub-minute latency; ML feature store; BIAN Regulatory Reporting auto-fed', sub: 'All BIAN domain events consumed by unified streaming platform (Kafka/Flink); sub-minute data latency; ML feature store updated in real-time from domain events; BIAN Regulatory Reporting domain auto-fed from event log; no polling anywhere' }
         ]
       },
       {
-        text: 'How do you manage customer master data?',
+        text: 'How confident are business and risk teams in data consistency across BIAN service domains, and are data contracts enforced?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Siloed per system', sub: 'Each system has its own customer record; no single view' },
-          { score: 2, level: 'Level 2', text: 'Core banking as master', sub: 'Core banking is the de facto source; other systems sync nightly' },
-          { score: 3, level: 'Level 3', text: 'Dedicated MDM system', sub: 'Single customer view with real-time synchronisation across domains' },
-          { score: 4, level: 'Level 4', text: 'Enterprise data fabric', sub: 'Canonical customer model, event-sourced golden record, real-time cross-domain sync' }
+          { score: 1, level: 'Level 1 — Low confidence; no contracts', text: 'Different BIAN domains report different figures; reconciliation frequent', sub: 'BIAN Party Data Management absent or duplicated across domains; no single version of truth for Customer, Account, or Transaction; manual inter-domain reconciliation is a routine activity; data lineage unknown' },
+          { score: 2, level: 'Level 2 — Informal master; manual reconciliation', text: 'Core banking as de facto master; CDM not formally defined', sub: 'Core banking system is the de facto master for key BIAN entities; inter-domain reconciliation is a regular manual effort; no formal data contracts; lineage documented manually if at all' },
+          { score: 3, level: 'Level 3 — Governed CDM with automated quality checks', text: 'Party Data Management as authoritative source; lineage tracked', sub: 'Canonical Data Model formally defined for key BIAN entities; BIAN Party Data Management is the authoritative source; automated data quality checks alert on breaches proactively; lineage tracked in enterprise data catalog' },
+          { score: 4, level: 'Level 4 — Data contracts between BIAN domains', text: 'Pipeline fails on breach; active metadata platform; compliance automated', sub: 'Formal data contracts enforced between BIAN producer and consumer domains; data pipeline fails automatically on contract breach; active metadata management platform tracks lineage across all BIAN domain boundaries; compliance reporting generated without manual reconciliation' }
         ]
       },
       {
-        text: 'What is your analytics and business intelligence capability?',
+        text: 'How self-sufficient are business teams in getting insights from your BIAN Financial Reporting domain and analytics estate?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Excel / manual reports', sub: 'Manual extracts from core systems; no BI platform' },
-          { score: 2, level: 'Level 2', text: 'Standard BI dashboards', sub: 'Scheduled batch reports; business users dependent on IT for new reports' },
-          { score: 3, level: 'Level 3', text: 'Self-service BI', sub: 'Business users create reports; some real-time dashboards; basic predictive analytics' },
-          { score: 4, level: 'Level 4', text: 'AI-driven insights', sub: 'Predictive and prescriptive analytics, NLP, embedded ML in business workflows' }
+          { score: 1, level: 'Level 1 — Fully IT-dependent', text: 'BIAN Financial Reporting not a distinct domain; every report is an IT project', sub: 'BIAN Financial Reporting capability is not a distinct, governed domain; every new report or dashboard requires an IT project; business teams work from pre-defined monthly packs; ad hoc questions go unanswered for weeks' },
+          { score: 2, level: 'Level 2 — Mostly IT-dependent', text: 'Standard dashboards expose some BIAN domain data; custom analysis needs IT', sub: 'Standard dashboards expose key BIAN domain data; any deviation from standard reports requires IT involvement; data literacy and tooling skills vary widely across business teams' },
+          { score: 3, level: 'Level 3 — Self-service for most needs', text: 'BIAN Financial Reporting feeds self-service BI; 70%+ of questions answered', sub: 'BIAN Financial Reporting domain feeds a self-service BI layer; business users build and modify reports independently; 70%+ of business questions answered without IT; analytical teams can run explorations unaided' },
+          { score: 4, level: 'Level 4 — Insight-driven platform', text: 'ML surfaces predictive insights; business uses embedded analytics or NLP', sub: 'ML automatically surfaces predictive insights from BIAN domain events; business users interact with data via embedded analytics in workflows or natural language interfaces; IT focused entirely on platform reliability and data quality; data-driven decision rate tracked as a business KPI' }
+        ]
+      },
+      {
+        text: 'How ready is your data infrastructure to support ML models in production across regulated BIAN domains (Credit Management, AML, Fraud Detection)?',
+        options: [
+          { score: 1, level: 'Level 1 — Not ready', text: 'BIAN AML and Fraud Detection use static rules; no ML infrastructure', sub: 'BIAN AML and Fraud Detection domains rely entirely on static rule engines; BIAN Credit Management has no model governance framework; no feature store, MLOps, or model monitoring infrastructure' },
+          { score: 2, level: 'Level 2 — Experimental', text: 'Data scientists build models in notebooks; no feature store or MLOps', sub: 'Data science team can build models in notebooks; models deployed manually or not at all; no feature store, model versioning, or performance monitoring; no model governance for regulated BIAN domains' },
+          { score: 3, level: 'Level 3 — Production-ready for key domains', text: 'MLOps pipeline; model versioning; BIAN Credit, AML, Fraud Detection in production', sub: 'Feature engineering pipelines established; MLOps pipeline with model versioning and performance monitoring; BIAN Credit Management, AML, and Fraud Detection all have ML models in production with automated retraining triggers' },
+          { score: 4, level: 'Level 4 — Enterprise ML platform', text: 'Real-time feature store; explainability for BIAN regulated domains; FATF-aligned', sub: 'Real-time feature store fed from BIAN domain events; automated retraining and deployment pipeline; model registry with full lineage; explainability built into BIAN Credit Management and AML decisions for regulatory review; FATF-aligned model governance' }
         ]
       }
     ]
@@ -720,35 +458,44 @@ const DOMAINS = [
     id: 'cloud',
     icon: '☁️',
     name: 'Cloud & Infrastructure',
-    subtitle: 'Cloud-Native Readiness & DevOps',
-    desc: 'Cloud adoption, containerisation, CI/CD maturity, and disaster recovery posture.',
+    subtitle: 'DORA Metrics · IaC · DR Posture · Portability',
+    desc: 'Assess deployment frequency against DORA benchmarks, environment reproducibility, disaster recovery posture for tier-1 BIAN domains, and cloud portability.',
     benchmark: 8.0,
     questions: [
       {
-        text: 'Where do you run your core banking systems?',
+        text: 'How frequently can your teams deploy changes to BIAN service domains, and how does your deployment risk profile compare to DORA benchmarks?',
         options: [
-          { score: 1, level: 'Level 1', text: 'On-premise only', sub: 'Physical or virtualised servers in own data centre; no cloud adoption' },
-          { score: 2, level: 'Level 2', text: 'Virtualised on-premise', sub: 'VMware or similar; some lift-and-shift to IaaS for non-critical workloads' },
-          { score: 3, level: 'Level 3', text: 'Hybrid cloud', sub: 'Core banking on-premise; digital channels and analytics in cloud; private link connectivity' },
-          { score: 4, level: 'Level 4', text: 'Cloud-native', sub: 'Microservices on Kubernetes; multi-cloud or cloud-first strategy; data residency compliant' }
+          { score: 1, level: 'Level 1 — Monthly or quarterly', text: 'Large bundled releases; high risk; manual rollback; DORA not tracked', sub: 'Large, infrequent releases bundle changes across BIAN domains; every release is high-risk; rollback is manual and disruptive; change freezes common before major releases; DORA metrics not tracked' },
+          { score: 2, level: 'Level 2 — Bi-weekly', text: 'Some CI/CD; coordinated testing windows across BIAN domains still required', sub: 'Some CI/CD automation reduces manual effort; BIAN domain deployments still require coordinated testing windows and multi-team sign-off; DORA metrics tracked informally' },
+          { score: 3, level: 'Level 3 — Weekly or on-demand', text: 'Automated CI/CD; blue/green per domain; DORA lead time tracked', sub: 'Automated CI/CD pipeline with quality gates per BIAN domain service; blue/green or canary deployments; individual domain teams deploy independently; DORA lead time measured and improving' },
+          { score: 4, level: 'Level 4 — Multiple times per day per service', text: 'GitOps; feature flags; DORA elite benchmarks; automated rollback on SLO breach', sub: 'GitOps with progressive delivery; feature flags decouple deployment from release; DORA elite benchmarks achieved (lead time < 1 hour, change failure rate < 5%); automated rollback triggered by SLO breach; deployment risk near-zero' }
         ]
       },
       {
-        text: 'What is your CI/CD and DevOps maturity?',
+        text: 'How reproducible and consistent are your BIAN service domain runtime environments across development, test, staging, and production?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Manual deployments', sub: 'No automation; manual build, test, and release processes' },
-          { score: 2, level: 'Level 2', text: 'Basic CI pipeline', sub: 'Automated builds and unit tests; manual deployment approval gates' },
-          { score: 3, level: 'Level 3', text: 'Full CI/CD pipeline', sub: 'Automated testing, staging deployments, blue/green or canary releases' },
-          { score: 4, level: 'Level 4', text: 'DevSecOps', sub: 'GitOps, automated SAST/DAST, progressive delivery, infrastructure-as-code, SRE practices' }
+          { score: 1, level: 'Level 1 — Manual; snowflake environments', text: 'Environments configured manually; config embedded in BIAN domain application code', sub: 'Snowflake servers common; environment setup not repeatable; configuration embedded in BIAN domain application code; "works on my machine" issues routine; environment drift constant' },
+          { score: 2, level: 'Level 2 — Partial IaC; drift occurs', text: 'Terraform/Ansible scripts exist but not consistently applied; parity not enforced', sub: 'Infrastructure-as-code scripts exist for some BIAN domain environments but are not consistently applied; configuration partially externalized; staging/production parity not enforced; environment drift occurs' },
+          { score: 3, level: 'Level 3 — Consistent IaC', text: 'All non-production environments via IaC; secret management; parity enforced', sub: 'All non-production BIAN domain environments provisioned via infrastructure-as-code; configuration externalized via secret management platform (Vault or equivalent); environment parity enforced; infrastructure changes reviewed like code' },
+          { score: 4, level: 'Level 4 — GitOps; immutable infrastructure', text: 'All environments including production via code; drift detection; no manual config', sub: 'Full GitOps model — all environments including production provisioned via code; immutable infrastructure; automated drift detection with alerts; dedicated secret management platform; no manual configuration changes permitted anywhere' }
         ]
       },
       {
-        text: 'What is your disaster recovery and business continuity posture?',
+        text: 'What are your RTO/RPO objectives for tier-1 BIAN service domains (Payment Execution, Current Account), and how frequently is failover tested?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Cold standby', sub: 'Manual failover; RTO > 24 hours; periodic tape backups' },
-          { score: 2, level: 'Level 2', text: 'Warm standby', sub: 'Secondary site with periodic data replication; RTO 4–8 hours' },
-          { score: 3, level: 'Level 3', text: 'Active-passive', sub: 'Automated failover with continuous replication; RTO < 4 hours; tested annually' },
-          { score: 4, level: 'Level 4', text: 'Active-active multi-region', sub: 'Zero-downtime failover; continuous replication; DORA compliant; chaos engineering' }
+          { score: 1, level: 'Level 1 — RTO > 24h; cold standby', text: 'No tested failover for BIAN Payment Execution and Account Management', sub: 'Cold standby; BIAN Payment Execution and Account Management domains have no tested automated failover; DR test over a year ago or never; tape/backup restoration required; significant customer and regulatory risk' },
+          { score: 2, level: 'Level 2 — RTO 4–8h / RPO 4h; warm standby', text: 'Periodic replication; partially automated failover; annual test', sub: 'Warm standby with periodic data replication; partially automated failover for tier-1 BIAN domains; annual DR test conducted in a maintenance window' },
+          { score: 3, level: 'Level 3 — RTO < 4h / RPO < 1h; Active-Passive', text: 'Continuous replication; automated failover; DORA-compliant; bi-annual test', sub: 'Active-Passive deployment pattern; continuous replication for tier-1 BIAN domains; automated failover; bi-annual DR test; meets standard DORA requirements (RTO < 4h, RPO < 1h) for critical banking services' },
+          { score: 4, level: 'Level 4 — Near-zero RTO/RPO; Active-Active', text: 'Active-Active multi-region for BIAN Payment Execution; chaos engineering quarterly', sub: 'Active-Active Multi-Region deployment for BIAN Payment Execution; zero-downtime failover; continuous cross-region replication; chaos engineering validates resilience quarterly; continuous automated failover testing; 99.99% availability for payment domains' }
+        ]
+      },
+      {
+        text: 'How portable are your BIAN service domain workloads across cloud providers, and how is vendor lock-in managed?',
+        options: [
+          { score: 1, level: 'Level 1 — Fully locked in', text: 'BIAN domains tightly coupled to proprietary infrastructure; migration infeasible', sub: 'Heavy reliance on cloud-provider-specific managed services or on-premise proprietary infrastructure; BIAN domain workloads cannot be redeployed without major re-engineering; no abstraction layers' },
+          { score: 2, level: 'Level 2 — Partially portable', text: 'Some containerisation; significant use of provider-specific managed services', sub: 'Some BIAN domain services containerised; significant use of provider-specific managed databases, messaging, and serverless; migration possible in theory but expensive; environment configuration not externalized' },
+          { score: 3, level: 'Level 3 — Mostly portable; Hybrid Cloud pattern', text: 'BIAN domains on Kubernetes; provider-specific services abstracted; Hybrid Cloud', sub: 'BIAN domain services containerised on Kubernetes; provider-specific services accessed through abstraction interfaces; Hybrid Cloud pattern in place (sensitive data on-premise, digital layer in cloud); migration feasible within months' },
+          { score: 4, level: 'Level 4 — Cloud-agnostic by design', text: 'Cloud-Native pattern; abstraction layers validated; multi-cloud strategy', sub: 'Cloud-Native deployment pattern across all BIAN domains; all provider-specific services accessed via abstraction layers; multi-cloud or cloud-agnostic architecture validated through periodic migration exercises; no BIAN domain is irrevocably bound to a single provider' }
         ]
       }
     ]
@@ -757,35 +504,44 @@ const DOMAINS = [
     id: 'security',
     icon: '🔒',
     name: 'Security & Compliance',
-    subtitle: 'Zero Trust, AML & Regulatory',
-    desc: 'Identity and access management, financial crime prevention, and regulatory compliance posture.',
+    subtitle: 'Zero Trust · API Security Layers · BIAN Compliance Domains',
+    desc: 'Assess Zero Trust access governance, API security layer completeness, BIAN Regulatory Compliance domain maturity, and AML/Fraud Detection effectiveness.',
     benchmark: 9.0,
     questions: [
       {
-        text: 'What is your identity and access management approach?',
+        text: 'How is access to BIAN service domains governed for staff, privileged users, and service-to-service calls?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Basic username/password', sub: 'Manual provisioning; no MFA; shared accounts common' },
-          { score: 2, level: 'Level 2', text: 'LDAP / AD with RBAC', sub: 'Centralised directory; role-based access; some MFA deployed' },
-          { score: 3, level: 'Level 3', text: 'IAM platform', sub: 'SSO, MFA, privileged access management (PAM), automated provisioning' },
-          { score: 4, level: 'Level 4', text: 'Zero Trust architecture', sub: 'Continuous verification, micro-segmentation, just-in-time access, identity-based perimeter' }
+          { score: 1, level: 'Level 1 — Manual and inconsistent', text: 'Shared accounts; no service-to-service auth; orphaned accounts after offboarding', sub: 'Access to BIAN domain systems provisioned manually on request; shared accounts and service accounts common; no service-to-service authentication between BIAN domains; offboarding leaves orphaned accounts' },
+          { score: 2, level: 'Level 2 — Directory-based with periodic reviews', text: 'LDAP/AD with RBAC; MFA for remote access; no mTLS between BIAN domains', sub: 'Centralised directory with role-based access; MFA deployed for remote access; access reviewed quarterly; no mTLS between BIAN domain services; privileged access not separately governed' },
+          { score: 3, level: 'Level 3 — IAM platform with PAM', text: 'SSO/MFA everywhere; PAM with session recording; automated provisioning', sub: 'SSO and MFA enforced for all BIAN domain access; automated provisioning and de-provisioning tied to BIAN domain team roles; privileged access management with session recording; access reviews continuous and automated' },
+          { score: 4, level: 'Level 4 — Zero Trust', text: 'Every BIAN domain access request continuously verified; just-in-time; mTLS everywhere', sub: 'Zero Trust network architecture — every access request to every BIAN domain continuously verified regardless of network location; just-in-time privileged access with no standing permissions; micro-segmentation limits blast radius; mTLS enforced between all BIAN domain services; device trust evaluated at every session' }
         ]
       },
       {
-        text: 'How do you handle AML and financial crime monitoring?',
+        text: 'How consistently are the four API security layers applied across your BIAN domain APIs — edge, gateway, service-to-service, and data?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Manual transaction review', sub: 'Periodic spot checks; reactive case handling' },
-          { score: 2, level: 'Level 2', text: 'Rule-based transaction monitoring', sub: 'Static thresholds; scheduled screening against sanction lists' },
-          { score: 3, level: 'Level 3', text: 'Automated AML system', sub: 'Real-time alerts, case management workflow, SAR generation, tunable rules' },
-          { score: 4, level: 'Level 4', text: 'AI-powered financial crime', sub: 'Behavioral analytics, network graph analysis, adaptive ML models, low false-positive rates' }
+          { score: 1, level: 'Level 1 — No consistent layers', text: 'WAF absent; BIAN domain APIs exposed without OAuth; no mTLS; no field-level encryption', sub: 'WAF and DDoS protection absent or inconsistently applied; BIAN domain APIs exposed without OAuth/JWT validation; no inter-service mTLS; PII and card data not encrypted at field level; OWASP compliance not assessed' },
+          { score: 2, level: 'Level 2 — Edge and gateway only', text: 'WAF and API key management; OAuth partial; no mTLS; no field-level encryption', sub: 'WAF and API key management in place at the edge; OAuth partially deployed at gateway; no mTLS between BIAN domain services; PII not encrypted at field level; OWASP risks known but not systematically addressed' },
+          { score: 3, level: 'Level 3 — Three layers; OWASP compliant', text: 'WAF, OAuth/mTLS, OWASP Top 10; input/output validation across BIAN domain APIs', sub: 'Three security layers implemented — edge (WAF, rate limiting), gateway (OAuth 2.0/OIDC, JWT), and service-to-service (mTLS); OWASP Top 10 compliance verified; input/output validation standards applied to all BIAN domain APIs; SAST in CI/CD' },
+          { score: 4, level: 'Level 4 — All four layers; automated governance', text: 'WAF, OAuth, mTLS, PII field-level encryption; SAST/DAST/SCA in every build', sub: 'All four API security layers applied — edge, gateway, service-to-service mTLS, and data (field-level PII encryption, card data tokenisation); SAST/DAST/SCA automated in every build; attribute-based access control across all BIAN domain APIs; security compliance verified per build per domain' }
         ]
       },
       {
-        text: 'What is your data privacy and regulatory compliance posture?',
+        text: 'How mature is your BIAN Regulatory Compliance domain — is it a continuously monitored capability or a reactive audit function?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Ad hoc / undocumented', sub: 'No formal data privacy programme; compliance gaps likely' },
-          { score: 2, level: 'Level 2', text: 'Policy-based', sub: 'Documented policies; manually enforced; periodic audits' },
-          { score: 3, level: 'Level 3', text: 'Technical controls', sub: 'Encryption at rest/transit, access logging, data classification, PCI-DSS compliant' },
-          { score: 4, level: 'Level 4', text: 'Privacy by design', sub: 'Automated consent management, right-to-erasure workflows, continuous compliance monitoring' }
+          { score: 1, level: 'Level 1 — Reactive audit function', text: 'BIAN Regulatory Compliance not a distinct domain; gaps found during audit', sub: 'Compliance evidenced only during regulatory audit; BIAN Regulatory Compliance not separated as a distinct domain from other functions; control gaps typically discovered by regulators or auditors rather than internally' },
+          { score: 2, level: 'Level 2 — Policy-based with periodic review', text: 'Documented framework; periodic technical review; evidence collected manually', sub: 'Documented compliance framework; periodic technical controls review; compliance evidence collected manually; BIAN Regulatory Reporting partially automated; gaps known but remediation reactive' },
+          { score: 3, level: 'Level 3 — Technical controls with continuous monitoring', text: 'Encryption, access logging, DLP; BIAN Regulatory Compliance monitors continuously', sub: 'Technical controls (encryption, access logging, data classification, DLP) in place; BIAN Regulatory Compliance domain monitors controls continuously; audit evidence auto-generated for most regulatory requirements; breach escalation process defined' },
+          { score: 4, level: 'Level 4 — Compliance by design', text: 'Controls embedded in BIAN domain architecture; real-time breach alerting; Privacy by Design', sub: 'BIAN Regulatory Compliance and Regulatory Reporting domains fully operational; controls embedded in every BIAN domain\'s architecture; Privacy by Design applied; automated consent management and right-to-erasure workflows; real-time breach alerting; regulatory reports generated without manual intervention' }
+        ]
+      },
+      {
+        text: 'How mature are your BIAN AML and Fraud Detection service domains, measured by false-positive rate and detection model sophistication?',
+        options: [
+          { score: 1, level: 'Level 1 — > 90% false-positive rate', text: 'BIAN AML and Fraud Detection use static rule thresholds; not distinct domains', sub: 'Static rule-based thresholds only; BIAN AML and Fraud Detection are not cleanly separated domains; analyst time consumed by noise rather than genuine risk; sanctions screening is periodic, not real-time' },
+          { score: 2, level: 'Level 2 — 70–90% false-positive rate', text: 'BIAN AML and Fraud Detection separated; rule engines with case management', sub: 'BIAN AML and Fraud Detection implemented as separate domains with tuned rule engines; case management workflow with SAR generation; periodic sanctions list screening; alert tuning possible but labour-intensive' },
+          { score: 3, level: 'Level 3 — 40–70% false-positive rate', text: 'BIAN AML with real-time monitoring; Fraud Detection with ML scoring', sub: 'BIAN AML domain operates with real-time transaction monitoring and configurable rules; BIAN Fraud Detection domain uses ML scoring; case management with SAR generation; alert tuning process defined and operated by compliance team' },
+          { score: 4, level: 'Level 4 — < 30% false-positive rate', text: 'Adaptive ML; network graph analysis; FATF-aligned; automated retraining', sub: 'BIAN AML and Fraud Detection domains use adaptive ML with behavioural analytics and network graph analysis; FATF-aligned typology library; automated retraining as typologies evolve; analyst productivity significantly improved; real-time sanctions screening at payment execution' }
         ]
       }
     ]
@@ -794,35 +550,44 @@ const DOMAINS = [
     id: 'observability',
     icon: '📡',
     name: 'Observability & Ops',
-    subtitle: 'Monitoring, Alerting & Audit',
-    desc: 'Operational visibility, incident management maturity, and audit/regulatory reporting capability.',
+    subtitle: 'BIAN Domain SLOs · MTTR · Cross-Domain Tracing',
+    desc: 'Assess your ability to detect BIAN domain degradation, resolve incidents rapidly, trace transactions across domain boundaries, and automate the BIAN Regulatory Reporting domain.',
     benchmark: 7.0,
     questions: [
       {
-        text: 'What is your monitoring and observability capability?',
+        text: 'How quickly can you detect and quantify the business impact of a BIAN service domain degradation or outage?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Reactive — user-reported', sub: 'Issues discovered when customers or staff report them; no proactive monitoring' },
-          { score: 2, level: 'Level 2', text: 'Basic infrastructure monitoring', sub: 'Server metrics, uptime checks, email alerts; no application-level visibility' },
-          { score: 3, level: 'Level 3', text: 'APM and distributed tracing', sub: 'Application performance monitoring, distributed traces, custom business dashboards' },
-          { score: 4, level: 'Level 4', text: 'Full observability + AIOps', sub: 'Unified logs/traces/metrics, predictive alerting, automated anomaly detection, SLO tracking' }
+          { score: 1, level: 'Level 1 — Minutes to hours', text: 'Issues discovered when customers report failures; impact calculated manually', sub: 'No automated BIAN domain-level monitoring; issues discovered when customers call or transactions visibly fail; business impact (transactions affected, revenue at risk) calculated manually after resolution' },
+          { score: 2, level: 'Level 2 — Infrastructure alerts', text: 'Server and uptime alerts fire; BIAN application-level impact still manual', sub: 'Infrastructure monitoring triggers alerts on CPU/memory/uptime; BIAN application-level errors sometimes captured; business impact of BIAN domain degradation still calculated manually after the fact' },
+          { score: 3, level: 'Level 3 — BIAN domain-level APM; MTTD < 5 minutes', text: 'APM per domain; KPI dashboards show impact in near-real-time', sub: 'Application performance monitoring and distributed tracing deployed per BIAN domain; KPI dashboards (transaction volume, error rate per domain) show business impact in near-real-time; MTTD under 5 minutes for major incidents; SLOs defined per domain' },
+          { score: 4, level: 'Level 4 — Predictive and domain-aware', text: 'Anomaly detection before customer impact; business impact quantified in real-time', sub: 'Anomaly detection predicts BIAN domain degradation before customer impact occurs; business impact (revenue at risk, affected transactions per domain) quantified automatically in real-time; SLO dashboards with automated escalation; BIAN domain health visible to all stakeholders' }
         ]
       },
       {
-        text: 'How do you manage incidents and service disruptions?',
+        text: 'What is your mean time to resolve (MTTR) a production incident across BIAN service domains, and how structured is your incident response?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Ad hoc — email and calls', sub: 'No formal incident process; escalation depends on individual knowledge' },
-          { score: 2, level: 'Level 2', text: 'ITIL-based ticketing', sub: 'Incident management system; defined P1/P2/P3 priorities and escalation paths' },
-          { score: 3, level: 'Level 3', text: 'Automated alerting with runbooks', sub: 'Structured on-call, automated incident creation, runbooks for common scenarios' },
-          { score: 4, level: 'Level 4', text: 'SRE practices', sub: 'Error budgets, blameless post-mortems, chaos engineering, automated remediation' }
+          { score: 1, level: 'Level 1 — Hours to days', text: 'No structured process; resolution depends on individual BIAN domain knowledge', sub: 'No formal incident process; resolution depends on individual knowledge of BIAN domain implementations; cross-domain incidents especially slow; MTTR not measured; post-incident reviews rare or absent' },
+          { score: 2, level: 'Level 2 — 1–4 hours MTTR', text: 'ITIL process with P1/P2 priorities; runbooks for some BIAN domains', sub: 'ITIL-based incident management with P1/P2/P3 priorities; runbooks exist for some BIAN domains; cross-team handoffs slow investigation; MTTR tracked but not improving systematically' },
+          { score: 3, level: 'Level 3 — 15–60 minutes MTTR', text: 'Automated incident creation; distributed tracing isolates root cause to minutes', sub: 'Automated alerting and incident creation per BIAN domain; runbooks codified; distributed tracing reduces investigation to minutes; structured on-call rotation; error budget tracking per domain; MTTR trending down' },
+          { score: 4, level: 'Level 4 — Under 15 minutes MTTR', text: 'SRE practices; error budgets per BIAN domain; chaos engineering validates MTTR quarterly', sub: 'SRE practices with error budgets per BIAN domain; automated remediation for known failure patterns; blameless post-mortems drive systemic improvement; MTTR assumptions validated quarterly by chaos engineering; MTTR under 15 minutes consistently achieved for P1 incidents' }
         ]
       },
       {
-        text: 'What is your audit trail and regulatory reporting capability?',
+        text: 'How completely does your observability stack trace a customer transaction across BIAN service domain boundaries?',
         options: [
-          { score: 1, level: 'Level 1', text: 'Manual — on-demand extracts', sub: 'Reports pulled manually when requested by regulators or auditors' },
-          { score: 2, level: 'Level 2', text: 'Scheduled batch reports', sub: 'Automated scheduled reports; some manual validation before submission' },
-          { score: 3, level: 'Level 3', text: 'Automated regulatory reporting', sub: 'Automated report generation with near-real-time feeds; audit log system' },
-          { score: 4, level: 'Level 4', text: 'Continuous compliance', sub: 'Real-time regulatory data feeds, immutable audit trail, automated breach detection' }
+          { score: 1, level: 'Level 1 — No cross-domain tracing', text: 'Each BIAN domain logs independently; manual log stitching required', sub: 'Each BIAN domain logs independently with no shared identifier; tracing a failed transaction requires manual log extraction from multiple domain teams; cross-domain incidents are slow and expensive to investigate' },
+          { score: 2, level: 'Level 2 — Per-domain tracing only', text: 'Internal trace IDs within some domains; no correlation across BIAN boundaries', sub: 'Some BIAN domains generate internal trace IDs but correlation is not propagated across domain boundaries; cross-domain incidents still require manual log correlation across teams' },
+          { score: 3, level: 'Level 3 — Correlated across all BIAN domains', text: 'Single correlation ID reconstructs full cross-domain transaction path', sub: 'Correlation ID propagated from channel through all BIAN domains in the transaction path; single trace ID reconstructs the full cross-domain flow; KPIs (response time, error rate) defined and monitored per BIAN domain' },
+          { score: 4, level: 'Level 4 — OpenTelemetry; BIAN Regulatory Compliance audit trail', text: 'Automated anomaly detection on cross-domain traces; audit trail auto-generated', sub: 'OpenTelemetry-based distributed tracing across all BIAN domains; automated anomaly detection on correlated cross-domain traces; BIAN Regulatory Compliance audit trail auto-generated from trace data; business-level SLO dashboards per BIAN domain' }
+        ]
+      },
+      {
+        text: 'How automated is your BIAN Regulatory Reporting domain — from data ingestion to regulatory submission?',
+        options: [
+          { score: 1, level: 'Level 1 — Predominantly manual', text: 'BIAN Regulatory Reporting not a distinct domain; reports from manual extracts', sub: 'BIAN Regulatory Reporting not implemented as a distinct domain; reports produced manually from core system extracts; significant analyst effort per regulatory submission; errors discovered after submission' },
+          { score: 2, level: 'Level 2 — Scheduled batch with manual validation', text: 'Automated generation on a schedule; significant manual review before submission', sub: 'Automated report generation on a schedule; significant manual review and adjustment required before submission; late and incorrect reports are a recurring operational and regulatory risk' },
+          { score: 3, level: 'Level 3 — Near-automated BIAN Regulatory Reporting', text: 'Real-time data feeds; manual validation limited to exceptions; audit log in place', sub: 'BIAN Regulatory Reporting domain implemented and fed from near-real-time BIAN domain event streams; manual validation limited to exceptions and outliers; audit log system supports regulatory evidence requests on demand' },
+          { score: 4, level: 'Level 4 — Fully automated', text: 'BIAN Regulatory Reporting consumes events in real-time; immutable audit trail; zero manual effort', sub: 'BIAN Regulatory Reporting domain consumes events from all relevant service domains in real-time; reports submitted automatically; immutable tamper-evident audit trail; automated breach detection and escalation; zero manual effort for standard regulatory submissions' }
         ]
       }
     ]
@@ -831,65 +596,72 @@ const DOMAINS = [
 
 const RECOMMENDATIONS = {
   core: [
-    'Decompose monolithic core into BIAN-aligned service domains; prioritize high-change areas (Payments, Lending) first',
-    'Introduce a product configurator engine to reduce time-to-market for new products from months to days',
-    'Implement real-time GL posting via an event-driven accounting ledger to enable real-time balance sheets'
+    'Launch a BIAN-led core banking decomposition programme using the Strangler Fig pattern — extract highest-change domains (Payments, Lending, Product Catalogue) first; define a TOGAF Phase E roadmap with an Architecture Review Board to govern delivery',
+    'Implement a product configuration engine and expose Product Directory as a versioned API; target a 3–6 month product launch cadence independent of core banking release cycles',
+    'Establish an event streaming backbone (Kafka or equivalent) and implement BIAN Notify operations as domain events — this is the foundation for decoupling channels, analytics, and reporting from core banking',
+    'Publish machine-readable OpenAPI/AsyncAPI specs for all core banking interfaces; implement automated change impact analysis to protect consuming teams and enable fully independent release cycles'
   ],
   payments: [
-    'Achieve SEPA Instant (SCT Inst) compliance — EU IPR mandate requires reachability for all PSPs',
-    'Build a dedicated PSD2 hub with FAPI 2.0 and Berlin Group NextGenPSD2 APIs to unlock Open Banking revenue',
-    'Deploy inline ML fraud scoring (< 200ms P95) to meet SEPA Instant 10-second end-to-end SLA'
+    'Build a payment hub with pluggable rail adapters separating BIAN Payment Order management from rail-specific execution; prioritise real-time domestic rail compliance and inline BIAN AML/Fraud Detection integration',
+    'Automate reconciliation and exception management using BIAN Nostro Management domain data; target near-zero manual exception rate with AI-assisted root cause classification',
+    'Implement compliance-native payment architecture — inline BIAN AML and Fraud Detection subscribing to payment events; ISO 20022 native data model; dedicated FAPI 2.0 Open Banking platform',
+    'Invest in payment data analytics fed from BIAN Payment Execution events; expose monetizable APIs via a developer portal; track and optimise end-to-end settlement latency per rail'
   ],
   lending: [
-    'Implement a dedicated Loan Origination System (LOS) with BPMN workflow and credit bureau integration',
-    'Deploy statistical scorecard models as a minimum; target ML-based dynamic scoring for 65%+ STP rates',
-    'Integrate collateral management with external valuation feeds to automate LTV calculations and covenant monitoring'
+    'Implement a dedicated Loan Origination System with a business rules engine for the BIAN Credit Management domain; target sub-5-minute decisions for standard retail products; separate BIAN Credit Management from Consumer Loan and Corporate Loan domains',
+    'Deploy ML-based credit scoring with open banking data feeds; build a champion/challenger framework within the BIAN Credit Management domain; target 65%+ STP within 18 months',
+    'Connect BIAN lending domains via event streaming — publish origination, servicing, and collections events to enable real-time portfolio visibility and automated BIAN Delinquency Management triggering',
+    'Focus on explainability for automated decisions, full regulatory audit trail via BIAN Regulatory Reporting domain, and reducing the manual segment to below 10% for standard retail products'
   ],
   integration: [
-    'Adopt API-led connectivity (System → Process → Experience API tiers) to decouple channels from core systems',
-    'Implement an event streaming backbone (Kafka) for domain events — enables real-time processing and decouples producers from consumers',
-    'Align microservices boundaries to BIAN service domains to prevent capability overlap and enable independent deployability'
+    'Adopt API-led connectivity aligned to BIAN Service Operations — expose Initiate, Retrieve, Execute, and Notify operations via a governed API gateway; target 12-week maximum time-to-integrate for new third parties',
+    'Implement circuit breaking and bulkhead patterns at the API gateway; introduce event-driven architecture for BIAN Notify operations to decouple producers from consumers and achieve 99.99% effective availability',
+    'Establish API design standards referencing BIAN Service Operation semantics; enforce all four API security layers (WAF, OAuth/JWT, mTLS, field-level encryption); integrate SAST/DAST into CI/CD with quality gates',
+    'Expand event streaming to cover all BIAN domain Notify operations; build a self-service developer portal with interactive sandbox; track time-to-first-call and developer experience metrics'
   ],
   data: [
-    'Build a data lake alongside the existing DW to enable ML workloads and near-real-time analytics',
-    'Implement a Master Data Management system for a single customer view — critical for cross-sell and regulatory reporting',
-    'Invest in self-service BI to reduce IT dependency for reporting; target 70% of reports generated by business users'
+    'Build a streaming data platform (Kafka/Flink) fed from BIAN domain events to eliminate T+1 latency; establish a governed Canonical Data Model with BIAN Party Data Management as the authoritative source',
+    'Implement formal data governance with defined domain stewards; deploy data contracts between BIAN producer and consumer domains; integrate automated quality gates that fail pipelines on breach',
+    'Invest in self-service analytics tooling and an MLOps pipeline; deploy ML models in production for BIAN Credit Management, AML, and Fraud Detection domains; target 70%+ of business questions answered self-service',
+    'Advance toward an enterprise ML platform with a real-time feature store fed from BIAN domain events; build explainability for regulated BIAN domain decisions; establish FATF-aligned model governance'
   ],
   cloud: [
-    'Containerise new development workloads on Kubernetes; migrate stateless services to cloud progressively',
-    'Implement a full CI/CD pipeline with automated testing gates to reduce deployment risk and increase release frequency',
-    'Upgrade DR posture to active-passive with automated failover to meet DORA requirements (RTO < 4 hours, RPO < 1 hour)'
+    'Implement full CI/CD pipelines per BIAN domain service with automated quality gates and blue/green deployment; adopt IaC for all environments to eliminate configuration drift; begin tracking DORA metrics',
+    'Containerise all BIAN domain workloads on Kubernetes; implement GitOps with secret management; target DORA high-performer benchmarks (lead time < 1 week, change failure rate < 15%)',
+    'Upgrade DR posture to Active-Passive with automated failover for tier-1 BIAN domains (Payment Execution, Current Account); run bi-annual DR tests; achieve RTO < 4h / RPO < 1h per DORA requirements',
+    'Adopt Active-Active Multi-Region for BIAN Payment Execution; implement cloud-agnostic abstraction layers across all BIAN domains; formalise chaos engineering as quarterly validation of resilience assumptions'
   ],
   security: [
-    'Deploy a Zero Trust architecture model — remove implicit network trust; verify every identity and device continuously',
-    'Upgrade AML to a real-time transaction monitoring platform with ML-based alert scoring to reduce false positives',
-    'Implement automated consent management and data classification to meet GDPR right-to-erasure obligations'
+    'Deploy Zero Trust architecture across all BIAN domain access — eliminate standing privileges; implement just-in-time access; enforce mTLS between all BIAN domain services; integrate SAST/DAST into every build',
+    'Apply all four API security layers (WAF, OAuth/JWT, mTLS, field-level encryption) consistently across all BIAN domain APIs; enforce OWASP Top 10 compliance with automated CI/CD verification',
+    'Implement BIAN Regulatory Compliance as a continuously monitored domain; embed Privacy by Design; automate consent management and right-to-erasure workflows; generate regulatory evidence automatically',
+    'Upgrade BIAN AML and Fraud Detection domains to adaptive ML with behavioural analytics and network graph analysis; target false-positive rates below 30%; implement FATF-aligned model governance with automated retraining'
   ],
   observability: [
-    'Deploy an APM stack (Prometheus/Grafana + Jaeger/OpenTelemetry) across all critical banking services',
-    'Formalise SRE practices: define SLOs, implement error budgets, and run quarterly chaos engineering exercises',
-    'Build an automated regulatory reporting pipeline with immutable audit trail to reduce manual effort and compliance risk'
+    'Deploy APM and distributed tracing per BIAN domain (OpenTelemetry/Jaeger + Prometheus/Grafana); implement a correlation ID strategy propagating across all BIAN domain boundaries; define SLOs per domain',
+    'Formalise SRE practices with error budgets per BIAN domain; codify runbooks; implement automated incident creation and remediation for known patterns; target MTTR under 30 minutes for P1 incidents',
+    'Automate the BIAN Regulatory Reporting domain with real-time event feeds from all relevant BIAN domains; implement immutable tamper-evident audit trail; generate compliance reports automatically without manual effort',
+    'Invest in AIOps for predictive anomaly detection across BIAN domain traces; run quarterly chaos engineering to validate MTTR assumptions; derive business-level KPI dashboards directly from cross-domain trace data'
   ]
 };
 
 // STATE
-let currentDomain = -1; // -1 = intro
-let answers = {}; // { domainId: [score, score, score] }
+let currentDomain = -1;
+let answers = {};
 let clientName = '';
 
 function getScore(domainId) {
   const a = answers[domainId];
-  if (!a || a.filter(x => x > 0).length < 3) return null;
-  const raw = a.reduce((s, v) => s + v, 0); // 3–12
-  return ((raw - 3) / 9) * 10; // normalize to 0–10
+  const d = DOMAINS.find(x => x.id === domainId);
+  if (!a || !d || a.filter(x => x > 0).length < d.questions.length) return null;
+  const n = d.questions.length;
+  const raw = a.reduce((s, v) => s + v, 0);
+  return ((raw - n) / (n * 3)) * 10;
 }
 
 function getOverallScore() {
   let total = 0, count = 0;
-  DOMAINS.forEach(d => {
-    const s = getScore(d.id);
-    if (s !== null) { total += s; count++; }
-  });
+  DOMAINS.forEach(d => { const s = getScore(d.id); if (s !== null) { total += s; count++; } });
   return count > 0 ? total / count : 0;
 }
 
@@ -902,44 +674,26 @@ function getScoreColor(score, bench) {
 }
 
 function initUI() {
-  // Build progress steps
   const ps = document.getElementById('progressSteps');
   ps.innerHTML = '';
   DOMAINS.forEach((d, i) => {
-    if (i > 0) {
-      const conn = document.createElement('div');
-      conn.className = 'step-connector';
-      ps.appendChild(conn);
-    }
+    if (i > 0) { const c = document.createElement('div'); c.className = 'step-connector'; ps.appendChild(c); }
     const dot = document.createElement('div');
-    dot.className = 'step-dot';
-    dot.id = `step-${i}`;
+    dot.className = 'step-dot'; dot.id = `step-${i}`;
     dot.innerHTML = `<div class="dot">${i+1}</div><div class="label">${d.name}</div>`;
     dot.onclick = () => { if (i <= currentDomain + 1) goToDomain(i); };
     ps.appendChild(dot);
   });
-  // Results step
-  const conn = document.createElement('div');
-  conn.className = 'step-connector';
-  ps.appendChild(conn);
-  const rDot = document.createElement('div');
-  rDot.className = 'step-dot';
-  rDot.id = 'step-results';
+  const c = document.createElement('div'); c.className = 'step-connector'; ps.appendChild(c);
+  const rDot = document.createElement('div'); rDot.className = 'step-dot'; rDot.id = 'step-results';
   rDot.innerHTML = `<div class="dot">📊</div><div class="label">Results</div>`;
   ps.appendChild(rDot);
 
-  // Build domain list
-  const dl = document.getElementById('domainList');
-  dl.innerHTML = '';
+  const dl = document.getElementById('domainList'); dl.innerHTML = '';
   DOMAINS.forEach((d, i) => {
     const item = document.createElement('div');
-    item.className = 'domain-item';
-    item.id = `domain-item-${i}`;
-    item.innerHTML = `
-      <div class="domain-icon">${d.icon}</div>
-      <div class="domain-name">${d.name}</div>
-      <div class="domain-score-badge" id="domain-badge-${d.id}">—</div>
-    `;
+    item.className = 'domain-item'; item.id = `domain-item-${i}`;
+    item.innerHTML = `<div class="domain-icon">${d.icon}</div><div class="domain-name">${d.name}</div><div class="domain-score-badge" id="domain-badge-${d.id}">—</div>`;
     item.onclick = () => { if (i <= currentDomain + 1) goToDomain(i); };
     dl.appendChild(item);
   });
@@ -949,48 +703,32 @@ function updateSidebarScore() {
   const overall = getOverallScore();
   document.getElementById('overallScoreVal').textContent = overall.toFixed(1);
   const pct = (overall / 10) * 100;
-  const circle = document.getElementById('scoreCircle');
   const color = overall >= 7 ? '#2ecc71' : overall >= 5 ? '#f39c12' : '#e74c3c';
-  circle.style.background = `conic-gradient(${color} ${pct * 3.6}deg, var(--border) 0deg)`;
+  document.getElementById('scoreCircle').style.background = `conic-gradient(${color} ${pct * 3.6}deg, var(--border) 0deg)`;
   document.getElementById('scoreCircleText').textContent = Math.round(overall);
-
   DOMAINS.forEach((d, i) => {
     const s = getScore(d.id);
     const badge = document.getElementById(`domain-badge-${d.id}`);
     const item = document.getElementById(`domain-item-${i}`);
     if (s !== null) {
-      badge.textContent = s.toFixed(1);
-      badge.className = 'domain-score-badge filled';
-      badge.style.background = getScoreColor(s, d.benchmark) + '33';
-      badge.style.color = getScoreColor(s, d.benchmark);
+      badge.textContent = s.toFixed(1); badge.className = 'domain-score-badge filled';
+      badge.style.background = getScoreColor(s, d.benchmark) + '33'; badge.style.color = getScoreColor(s, d.benchmark);
       if (item && !item.classList.contains('active')) item.classList.add('done');
-    } else {
-      badge.textContent = '—';
-      badge.className = 'domain-score-badge';
-      badge.style.background = '';
-      badge.style.color = '';
-    }
+    } else { badge.textContent = '—'; badge.className = 'domain-score-badge'; badge.style.background = ''; badge.style.color = ''; }
   });
 }
 
 function updateProgress() {
-  const total = DOMAINS.length;
-  const done = Object.keys(answers).filter(k => answers[k] && answers[k].filter(x => x > 0).length === 3).length;
-  const pct = currentDomain >= 0 ? ((currentDomain + 1) / (total + 1)) * 100 : 0;
+  const pct = currentDomain >= 0 ? ((currentDomain + 1) / (DOMAINS.length + 1)) * 100 : 0;
   document.getElementById('progressFill').style.width = pct + '%';
-
   DOMAINS.forEach((d, i) => {
-    const dot = document.getElementById(`step-${i}`);
-    if (!dot) return;
-    const s = getScore(d.id);
+    const dot = document.getElementById(`step-${i}`); if (!dot) return;
     dot.className = 'step-dot';
     if (i === currentDomain) dot.classList.add('active');
-    else if (s !== null) dot.classList.add('done');
+    else if (getScore(d.id) !== null) dot.classList.add('done');
   });
-
   DOMAINS.forEach((d, i) => {
-    const item = document.getElementById(`domain-item-${i}`);
-    if (!item) return;
+    const item = document.getElementById(`domain-item-${i}`); if (!item) return;
     item.className = 'domain-item';
     if (i === currentDomain) item.classList.add('active');
     else if (getScore(d.id) !== null) item.classList.add('done');
@@ -1004,17 +742,12 @@ function startAssessment() {
   goToDomain(0);
 }
 
-function goToDomain(idx) {
-  currentDomain = idx;
-  updateProgress();
-  renderDomain(idx);
-}
+function goToDomain(idx) { currentDomain = idx; updateProgress(); renderDomain(idx); }
 
 function renderDomain(idx) {
   const d = DOMAINS[idx];
-  if (!answers[d.id]) answers[d.id] = [0, 0, 0];
-
-  const answered = answers[d.id].filter(x => x > 0).length;
+  const n = d.questions.length;
+  if (!answers[d.id]) answers[d.id] = new Array(n).fill(0);
   const qa = document.getElementById('questionArea');
 
   let html = `
@@ -1025,68 +758,45 @@ function renderDomain(idx) {
         <div class="domain-desc">${d.desc}</div>
       </div>
       <div class="domain-progress-pill">Domain <span>${idx + 1}</span> of ${DOMAINS.length}</div>
-    </div>
-  `;
+    </div>`;
 
   d.questions.forEach((q, qi) => {
     const qAnswered = answers[d.id][qi] > 0;
-    html += `
-      <div class="question-card ${qAnswered ? 'answered' : ''}" id="qcard-${d.id}-${qi}">
-        <div class="q-header">
-          <div class="q-num">Q${qi + 1}</div>
-          <div class="q-text">${q.text}</div>
-          <div class="q-answered-badge">✓ Answered</div>
-        </div>
-        <div class="options-grid">
-    `;
-    q.options.forEach((opt, oi) => {
+    html += `<div class="question-card ${qAnswered ? 'answered' : ''}" id="qcard-${d.id}-${qi}">
+      <div class="q-header">
+        <div class="q-num">Q${qi + 1}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="q-answered-badge">✓ Answered</div>
+      </div>
+      <div class="options-grid">`;
+    q.options.forEach(opt => {
       const isSelected = answers[d.id][qi] === opt.score;
-      html += `
-        <div class="option-btn ${isSelected ? 'selected' : ''} s${opt.score}"
-             onclick="selectAnswer('${d.id}', ${qi}, ${opt.score})">
-          <div class="opt-score">${opt.score}</div>
-          <div class="opt-content">
-            <div class="opt-level">${opt.level}</div>
-            <div class="opt-text">${opt.text}</div>
-            <div class="opt-subtext">${opt.sub}</div>
-          </div>
+      html += `<div class="option-btn ${isSelected ? 'selected' : ''} s${opt.score}" onclick="selectAnswer('${d.id}', ${qi}, ${opt.score})">
+        <div class="opt-score">${opt.score}</div>
+        <div class="opt-content">
+          <div class="opt-level">${opt.level}</div>
+          <div class="opt-text">${opt.text}</div>
+          <div class="opt-subtext">${opt.sub}</div>
         </div>
-      `;
+      </div>`;
     });
     html += `</div>`;
-
     if (qAnswered) {
       const score = answers[d.id][qi];
       const pct = ((score - 1) / 3) * 100;
       const color = score === 1 ? '#e74c3c' : score === 2 ? '#f39c12' : score === 3 ? '#2ecc71' : '#00b4d8';
-      html += `
-        <div class="q-score-bar">
-          <div class="q-score-label">Your score</div>
-          <div class="q-score-track"><div class="q-score-fill" style="width:${pct}%;background:${color}"></div></div>
-          <div class="q-score-val" style="color:${color}">${score}/4</div>
-        </div>
-      `;
+      html += `<div class="q-score-bar"><div class="q-score-label">Your score</div><div class="q-score-track"><div class="q-score-fill" style="width:${pct}%;background:${color}"></div></div><div class="q-score-val" style="color:${color}">${score}/4</div></div>`;
     }
     html += `</div>`;
   });
 
-  const isComplete = answers[d.id].filter(x => x > 0).length === 3;
+  const isComplete = answers[d.id].filter(x => x > 0).length === n;
   const isLast = idx === DOMAINS.length - 1;
-  html += `
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goToDomain(${idx - 1})" ${idx === 0 ? 'disabled' : ''}>
-        ← Previous
-      </button>
-      <div class="domain-completion">
-        <span>${answers[d.id].filter(x => x > 0).length}</span> of 3 questions answered
-      </div>
-      <button class="btn btn-primary" id="nextBtn"
-        onclick="${isLast ? 'showResults()' : `goToDomain(${idx + 1})`}"
-        ${!isComplete ? 'disabled' : ''}>
-        ${isLast ? '📊 View Results' : 'Next Domain →'}
-      </button>
-    </div>
-  `;
+  html += `<div class="nav-row">
+    <button class="btn btn-secondary" onclick="goToDomain(${idx - 1})" ${idx === 0 ? 'disabled' : ''}>← Previous</button>
+    <div class="domain-completion"><span>${answers[d.id].filter(x => x > 0).length}</span> of ${n} questions answered</div>
+    <button class="btn btn-primary" onclick="${isLast ? 'showResults()' : `goToDomain(${idx + 1})`}" ${!isComplete ? 'disabled' : ''}>${isLast ? '📊 View Results' : 'Next Domain →'}</button>
+  </div>`;
 
   qa.innerHTML = html;
   qa.scrollTop = 0;
@@ -1109,237 +819,90 @@ function showResults() {
 
 function buildResults() {
   const overall = getOverallScore();
-  const client = clientName;
-
-  // Maturity level
   let matLevel, matDesc, matColor, matIcon;
-  if (overall >= 8) {
-    matLevel = 'Digital Leader'; matIcon = '🏆';
-    matDesc = 'Architecture is at or exceeding industry benchmarks. Focus on continuous innovation and maintaining the edge.';
-    matColor = 'linear-gradient(135deg, rgba(46,204,113,0.2), rgba(0,180,216,0.1))';
-  } else if (overall >= 6) {
-    matLevel = 'Progressing'; matIcon = '📈';
-    matDesc = 'Architecture is largely modern with specific gaps. A targeted investment in 2–3 priority domains will close the benchmark gap.';
-    matColor = 'linear-gradient(135deg, rgba(0,180,216,0.2), rgba(52,152,219,0.1))';
-  } else if (overall >= 4) {
-    matLevel = 'Developing'; matIcon = '🔨';
-    matDesc = 'Foundation exists but significant capability gaps are limiting agility and competitive positioning. Prioritise integration and core modernisation.';
-    matColor = 'linear-gradient(135deg, rgba(243,156,18,0.2), rgba(230,126,34,0.1))';
-  } else {
-    matLevel = 'Legacy-Bound'; matIcon = '⚠️';
-    matDesc = 'Architecture is largely legacy. Immediate action is required to address regulatory risk and competitive disadvantage.';
-    matColor = 'linear-gradient(135deg, rgba(231,76,60,0.2), rgba(192,57,43,0.1))';
-  }
+  if (overall >= 8) { matLevel = 'Digital Leader'; matIcon = '🏆'; matDesc = 'Architecture is at or exceeding industry benchmarks. Focus on continuous innovation and maintaining the competitive edge.'; matColor = 'linear-gradient(135deg, rgba(46,204,113,0.2), rgba(0,180,216,0.1))'; }
+  else if (overall >= 6) { matLevel = 'Progressing'; matIcon = '📈'; matDesc = 'Architecture is largely modern with targeted gaps. Focused investment in 2–3 priority BIAN domains will close the benchmark gap.'; matColor = 'linear-gradient(135deg, rgba(0,180,216,0.2), rgba(52,152,219,0.1))'; }
+  else if (overall >= 4) { matLevel = 'Developing'; matIcon = '🔨'; matDesc = 'Foundation exists but significant BIAN domain capability gaps are limiting agility and competitive positioning. Prioritise integration and core modernisation.'; matColor = 'linear-gradient(135deg, rgba(243,156,18,0.2), rgba(230,126,34,0.1))'; }
+  else { matLevel = 'Legacy-Bound'; matIcon = '⚠️'; matDesc = 'Architecture is largely legacy. Immediate action required to address regulatory risk and competitive disadvantage — begin Strangler Fig extraction of highest-value BIAN domains.'; matColor = 'linear-gradient(135deg, rgba(231,76,60,0.2), rgba(192,57,43,0.1))'; }
 
-  // Gap analysis
-  const gaps = DOMAINS.map(d => ({
-    domain: d,
-    actual: getScore(d.id) || 0,
-    bench: d.benchmark,
-    gap: d.benchmark - (getScore(d.id) || 0)
-  })).sort((a, b) => b.gap - a.gap);
+  const gaps = DOMAINS.map(d => ({ domain: d, actual: getScore(d.id) || 0, bench: d.benchmark, gap: d.benchmark - (getScore(d.id) || 0) })).sort((a, b) => b.gap - a.gap);
 
   let gapRows = '';
   gaps.forEach(g => {
     const prio = g.gap >= 4 ? ['Critical', 'p-critical'] : g.gap >= 2.5 ? ['High', 'p-high'] : g.gap >= 1 ? ['Medium', 'p-medium'] : ['On Track', 'p-low'];
     const recs = RECOMMENDATIONS[g.domain.id];
-    const rec = g.gap > 0 ? (g.gap >= 3 ? recs[0] : g.gap >= 1.5 ? recs[1] : recs[2]) : 'Continue investing to maintain digital leadership position.';
+    const rec = g.gap > 0 ? (g.gap >= 3 ? recs[0] : g.gap >= 2 ? recs[1] : g.gap >= 1 ? recs[2] : recs[3]) : 'Continue investing to maintain digital leadership and BIAN domain coverage.';
     const gapPct = Math.max(0, (g.gap / 10) * 100);
-    gapRows += `
-      <tr>
-        <td><b>${g.domain.icon} ${g.domain.name}</b></td>
-        <td style="color:${getScoreColor(g.actual, g.bench)};font-weight:700">${g.actual.toFixed(1)}</td>
-        <td style="color:var(--gold)">${g.bench.toFixed(1)}</td>
-        <td>
-          <div class="gap-bar">
-            <div class="gap-val" style="color:${g.gap > 2 ? '#e74c3c' : '#f39c12'}">${g.gap > 0 ? '+' + g.gap.toFixed(1) : '✓'}</div>
-            <div class="gap-mini-bar"><div class="gap-mini-fill" style="width:${gapPct}%;background:${getScoreColor(g.actual, g.bench)}"></div></div>
-          </div>
-        </td>
-        <td><span class="priority-badge ${prio[1]}">${prio[0]}</span></td>
-        <td class="rec-text">${rec}</td>
-      </tr>
-    `;
+    gapRows += `<tr>
+      <td><b>${g.domain.icon} ${g.domain.name}</b></td>
+      <td style="color:${getScoreColor(g.actual, g.bench)};font-weight:700">${g.actual.toFixed(1)}</td>
+      <td style="color:var(--gold)">${g.bench.toFixed(1)}</td>
+      <td><div class="gap-bar"><div class="gap-val" style="color:${g.gap > 2 ? '#e74c3c' : '#f39c12'}">${g.gap > 0 ? '+' + g.gap.toFixed(1) : '✓'}</div><div class="gap-mini-bar"><div class="gap-mini-fill" style="width:${gapPct}%;background:${getScoreColor(g.actual, g.bench)}"></div></div></div></td>
+      <td><span class="priority-badge ${prio[1]}">${prio[0]}</span></td>
+      <td class="rec-text">${rec}</td>
+    </tr>`;
   });
 
-  // Domain scores bars
   let domBars = '';
   DOMAINS.forEach(d => {
     const s = getScore(d.id) || 0;
-    const pct = (s / 10) * 100;
-    const benchPct = (d.benchmark / 10) * 100;
-    domBars += `
-      <div class="ds-row">
-        <div class="ds-icon">${d.icon}</div>
-        <div class="ds-name">${d.name}</div>
-        <div class="ds-bar-track">
-          <div class="ds-bar-actual" style="width:${pct}%;background:${getScoreColor(s, d.benchmark)}"></div>
-          <div class="ds-bar-bench" style="width:${benchPct}%"></div>
-        </div>
-        <div class="ds-scores">
-          <span class="ds-actual" style="color:${getScoreColor(s, d.benchmark)}">${s.toFixed(1)}</span>
-          <span class="ds-bench"> / ${d.benchmark.toFixed(1)}</span>
-        </div>
-      </div>
-    `;
+    domBars += `<div class="ds-row"><div class="ds-icon">${d.icon}</div><div class="ds-name">${d.name}</div><div class="ds-bar-track"><div class="ds-bar-actual" style="width:${(s/10)*100}%;background:${getScoreColor(s, d.benchmark)}"></div><div class="ds-bar-bench" style="width:${(d.benchmark/10)*100}%"></div></div><div class="ds-scores"><span class="ds-actual" style="color:${getScoreColor(s, d.benchmark)}">${s.toFixed(1)}</span><span class="ds-bench"> / ${d.benchmark.toFixed(1)}</span></div></div>`;
   });
 
   const now = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   return `
     <div class="header" style="margin-bottom:0">
-      <div class="header-left">
-        <h1>Architecture Maturity Assessment Results</h1>
-        <p>${client} · ${now}</p>
-      </div>
+      <div class="header-left"><h1>Architecture Maturity Assessment Results</h1><p>${clientName} · ${now}</p></div>
       <button class="btn btn-secondary" onclick="restart()">← New Assessment</button>
     </div>
-
     <div style="padding:32px 40px">
       <div class="maturity-banner" style="background:${matColor};border:1px solid var(--border)">
         <div class="maturity-icon">${matIcon}</div>
-        <div>
-          <div class="maturity-name">${matLevel}</div>
-          <div class="maturity-desc">${matDesc}</div>
-        </div>
+        <div><div class="maturity-name">${matLevel}</div><div class="maturity-desc">${matDesc}</div></div>
       </div>
-
       <div class="results-score-hero">
-        <div class="hero-metric">
-          <div class="hm-val" style="color:${getScoreColor(overall, 8)}">${overall.toFixed(1)}</div>
-          <div class="hm-label">Overall Score</div>
-          <div class="hm-sub" style="color:var(--text-muted)">out of 10.0</div>
-        </div>
-        <div class="hero-metric">
-          <div class="hm-val" style="color:var(--gold)">8.1</div>
-          <div class="hm-label">Industry Benchmark</div>
-          <div class="hm-sub" style="color:var(--text-muted)">Tier-1 Digital Bank</div>
-        </div>
-        <div class="hero-metric">
-          <div class="hm-val" style="color:${(8.1 - overall) > 2 ? '#e74c3c' : '#f39c12'}">${Math.max(0, 8.1 - overall).toFixed(1)}</div>
-          <div class="hm-label">Gap to Benchmark</div>
-          <div class="hm-sub" style="color:var(--text-muted)">points to close</div>
-        </div>
-        <div class="hero-metric">
-          <div class="hm-val" style="color:var(--teal)">${gaps.filter(g => g.gap >= 3).length}</div>
-          <div class="hm-label">Critical Gaps</div>
-          <div class="hm-sub" style="color:var(--text-muted)">requiring priority action</div>
-        </div>
+        <div class="hero-metric"><div class="hm-val" style="color:${getScoreColor(overall, 8)}">${overall.toFixed(1)}</div><div class="hm-label">Overall Score</div><div class="hm-sub" style="color:var(--text-muted)">out of 10.0</div></div>
+        <div class="hero-metric"><div class="hm-val" style="color:var(--gold)">8.1</div><div class="hm-label">Industry Benchmark</div><div class="hm-sub" style="color:var(--text-muted)">Tier-1 Digital Bank</div></div>
+        <div class="hero-metric"><div class="hm-val" style="color:${(8.1-overall)>2?'#e74c3c':'#f39c12'}">${Math.max(0,8.1-overall).toFixed(1)}</div><div class="hm-label">Gap to Benchmark</div><div class="hm-sub" style="color:var(--text-muted)">points to close</div></div>
+        <div class="hero-metric"><div class="hm-val" style="color:var(--teal)">${gaps.filter(g=>g.gap>=3).length}</div><div class="hm-label">Critical Gaps</div><div class="hm-sub" style="color:var(--text-muted)">requiring priority action</div></div>
       </div>
-
       <div class="results-grid">
-        <div class="chart-card">
-          <h3>📊 Radar Assessment — Actual vs Benchmark</h3>
-          <div class="radar-wrap"><canvas id="radarChart"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <h3>📈 Domain Scores vs Industry Benchmark</h3>
-          <div class="domain-scores-list">${domBars}</div>
-          <div style="margin-top:16px;font-size:0.72rem;color:var(--text-muted);display:flex;gap:16px;align-items:center">
-            <span>━ Actual score</span>
-            <span style="color:var(--gold)">╎ Industry benchmark</span>
-          </div>
-        </div>
+        <div class="chart-card"><h3>📊 Radar Assessment — Actual vs Benchmark</h3><div class="radar-wrap"><canvas id="radarChart"></canvas></div></div>
+        <div class="chart-card"><h3>📈 Domain Scores vs Industry Benchmark</h3><div class="domain-scores-list">${domBars}</div><div style="margin-top:16px;font-size:0.72rem;color:var(--text-muted);display:flex;gap:16px;align-items:center"><span>━ Actual score</span><span style="color:var(--gold)">╎ Industry benchmark</span></div></div>
       </div>
-
       <div class="gap-section">
         <h3>🎯 Gap Analysis & Priority Recommendations</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Domain</th>
-              <th>Actual</th>
-              <th>Benchmark</th>
-              <th>Gap</th>
-              <th>Priority</th>
-              <th>Recommended Action</th>
-            </tr>
-          </thead>
-          <tbody>${gapRows}</tbody>
-        </table>
+        <table><thead><tr><th>Domain</th><th>Actual</th><th>Benchmark</th><th>Gap</th><th>Priority</th><th>Recommended Action</th></tr></thead><tbody>${gapRows}</tbody></table>
       </div>
-
       <div class="btn-row">
         <button class="btn btn-secondary" onclick="restart()">Start New Assessment</button>
         <button class="btn btn-teal" onclick="window.print()">🖨 Print / Export PDF</button>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function renderRadar() {
-  const ctx = document.getElementById('radarChart');
-  if (!ctx) return;
-
-  const labels = DOMAINS.map(d => d.name);
-  const actualData = DOMAINS.map(d => getScore(d.id) || 0);
-  const benchData = DOMAINS.map(d => d.benchmark);
-
+  const ctx = document.getElementById('radarChart'); if (!ctx) return;
   new Chart(ctx, {
     type: 'radar',
     data: {
-      labels: labels,
+      labels: DOMAINS.map(d => d.name),
       datasets: [
-        {
-          label: 'Your Score',
-          data: actualData,
-          backgroundColor: 'rgba(0, 180, 216, 0.15)',
-          borderColor: '#00b4d8',
-          borderWidth: 2,
-          pointBackgroundColor: '#00b4d8',
-          pointRadius: 4,
-        },
-        {
-          label: 'Industry Benchmark',
-          data: benchData,
-          backgroundColor: 'rgba(201, 168, 76, 0.08)',
-          borderColor: 'rgba(201, 168, 76, 0.7)',
-          borderWidth: 2,
-          borderDash: [6, 3],
-          pointBackgroundColor: 'rgba(201, 168, 76, 0.7)',
-          pointRadius: 3,
-        }
+        { label: 'Your Score', data: DOMAINS.map(d => getScore(d.id) || 0), backgroundColor: 'rgba(0,180,216,0.15)', borderColor: '#00b4d8', borderWidth: 2, pointBackgroundColor: '#00b4d8', pointRadius: 4 },
+        { label: 'Industry Benchmark', data: DOMAINS.map(d => d.benchmark), backgroundColor: 'rgba(201,168,76,0.08)', borderColor: 'rgba(201,168,76,0.7)', borderWidth: 2, borderDash: [6,3], pointBackgroundColor: 'rgba(201,168,76,0.7)', pointRadius: 3 }
       ]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        r: {
-          min: 0, max: 10,
-          ticks: {
-            stepSize: 2,
-            color: '#8892a4',
-            font: { size: 10 },
-            backdropColor: 'transparent'
-          },
-          grid: { color: 'rgba(30, 58, 110, 0.8)' },
-          angleLines: { color: 'rgba(30, 58, 110, 0.6)' },
-          pointLabels: {
-            color: '#e8eaf0',
-            font: { size: 11, weight: '600' }
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            color: '#8892a4',
-            font: { size: 11 },
-            padding: 16,
-            usePointStyle: true
-          }
-        }
-      }
+      responsive: true, maintainAspectRatio: false,
+      scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: '#8892a4', font: { size: 10 }, backdropColor: 'transparent' }, grid: { color: 'rgba(30,58,110,0.8)' }, angleLines: { color: 'rgba(30,58,110,0.6)' }, pointLabels: { color: '#e8eaf0', font: { size: 11, weight: '600' } } } },
+      plugins: { legend: { position: 'bottom', labels: { color: '#8892a4', font: { size: 11 }, padding: 16, usePointStyle: true } } }
     }
   });
 }
 
 function restart() {
-  answers = {};
-  currentDomain = -1;
-  clientName = '';
+  answers = {}; currentDomain = -1; clientName = '';
   document.getElementById('resultsPage').style.display = 'none';
   document.getElementById('resultsPage').innerHTML = '';
   document.getElementById('mainLayout').style.display = 'flex';
@@ -1347,11 +910,9 @@ function restart() {
   document.getElementById('questionArea').style.display = 'none';
   document.getElementById('introScreen').style.display = 'flex';
   document.getElementById('clientNameInput').value = '';
-  updateSidebarScore();
-  updateProgress();
+  updateSidebarScore(); updateProgress();
 }
 
-// INIT
 initUI();
 updateSidebarScore();
 </script>
