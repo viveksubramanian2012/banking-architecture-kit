@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banking Architecture Maturity Assessment</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1a3a6c;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --teal: #00b4d8;
+    --teal-dark: #0077a3;
+    --green: #2ecc71;
+    --orange: #f39c12;
+    --red: #e74c3c;
+    --text: #e8eaf0;
+    --text-muted: #8892a4;
+    --card-bg: #162040;
+    --border: #1e3a6e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-light) 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .header-left p { font-size: 0.8rem; color: var(--gold); margin-top: 3px; letter-spacing: 1px; text-transform: uppercase; }
+  .header-badge {
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--navy-mid);
+    padding: 16px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-steps {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .step-dot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    min-width: 70px;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.3s;
+  }
+  .step-dot.active { opacity: 1; }
+  .step-dot.done { opacity: 0.75; }
+  .step-dot .dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--navy-light);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700;
+    transition: all 0.3s;
+  }
+  .step-dot.active .dot { border-color: var(--gold); background: var(--gold); color: var(--navy); }
+  .step-dot.done .dot { border-color: var(--green); background: var(--green); color: var(--navy); }
+  .step-dot .label { font-size: 0.62rem; color: var(--text-muted); text-align: center; line-height: 1.2; white-space: nowrap; }
+  .step-dot.active .label { color: var(--gold); }
+  .step-connector { height: 2px; flex: 0.5; background: var(--border); margin-bottom: 18px; }
+  .progress-bar-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* MAIN LAYOUT */
+  .main { display: flex; min-height: calc(100vh - 145px); }
+  .sidebar {
+    width: 260px;
+    background: var(--navy-mid);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    flex-shrink: 0;
+  }
+  .sidebar-score {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .sidebar-score h3 { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .overall-score-ring {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .score-circle {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: conic-gradient(var(--teal) 0%, var(--border) 0%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .score-circle::before {
+    content: '';
+    position: absolute;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--navy-mid);
+  }
+  .score-circle span {
+    position: relative; z-index: 1;
+    font-size: 0.9rem; font-weight: 700; color: var(--teal);
+  }
+  .score-info { flex: 1; }
+  .score-info .score-val { font-size: 1.6rem; font-weight: 700; color: var(--text); line-height: 1; }
+  .score-info .score-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+  .domain-list { padding: 0 8px; }
+  .domain-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .domain-item:hover { background: var(--navy-light); }
+  .domain-item.active { background: rgba(201, 168, 76, 0.15); border-left: 3px solid var(--gold); }
+  .domain-item.done { border-left: 3px solid var(--green); }
+  .domain-icon { font-size: 1.1rem; width: 20px; text-align: center; }
+  .domain-name { font-size: 0.78rem; color: var(--text); flex: 1; }
+  .domain-score-badge {
+    font-size: 0.68rem; font-weight: 700;
+    padding: 2px 7px; border-radius: 10px;
+    background: var(--border);
+    color: var(--text-muted);
+  }
+  .domain-score-badge.filled { background: var(--teal-dark); color: #fff; }
+
+  /* CONTENT AREA */
+  .content { flex: 1; padding: 32px 40px; overflow-y: auto; }
+
+  /* DOMAIN HEADER */
+  .domain-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .domain-header-left h2 { font-size: 1.6rem; font-weight: 700; color: var(--text); }
+  .domain-header-left .domain-subtitle {
+    font-size: 0.8rem; color: var(--gold);
+    margin-top: 4px; text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  .domain-header-left .domain-desc {
+    font-size: 0.85rem; color: var(--text-muted);
+    margin-top: 8px; max-width: 520px; line-height: 1.5;
+  }
+  .domain-progress-pill {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .domain-progress-pill span { color: var(--gold); font-weight: 700; }
+
+  /* QUESTIONS */
+  .question-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+  }
+  .question-card.answered { border-color: rgba(46, 204, 113, 0.4); }
+  .question-card.answered .q-answered-badge {
+    display: inline-flex;
+  }
+  .q-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .q-num {
+    font-size: 0.68rem; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 1px;
+    background: rgba(201, 168, 76, 0.1);
+    padding: 3px 10px; border-radius: 10px;
+    flex-shrink: 0; margin-right: 12px; margin-top: 1px;
+  }
+  .q-text { font-size: 1rem; font-weight: 600; color: var(--text); flex: 1; line-height: 1.4; }
+  .q-answered-badge {
+    display: none;
+    align-items: center; gap: 4px;
+    font-size: 0.7rem; color: var(--green);
+    background: rgba(46, 204, 113, 0.1);
+    padding: 3px 10px; border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .option-btn {
+    background: var(--navy-mid);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    display: flex; align-items: flex-start; gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .option-btn:hover { border-color: var(--teal); background: rgba(0, 180, 216, 0.05); }
+  .option-btn.selected {
+    border-color: var(--teal);
+    background: rgba(0, 180, 216, 0.12);
+  }
+  .option-btn.selected::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--teal);
+  }
+  .opt-score {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700;
+    color: var(--text-muted);
+    flex-shrink: 0; margin-top: 1px;
+    transition: all 0.2s;
+  }
+  .option-btn.selected .opt-score { background: var(--teal); color: white; }
+  .opt-score-1 { --sc: #e74c3c; }
+  .opt-score-2 { --sc: #f39c12; }
+  .opt-score-3 { --sc: #2ecc71; }
+  .opt-score-4 { --sc: #00b4d8; }
+  .option-btn.selected.s1 .opt-score { background: #e74c3c; }
+  .option-btn.selected.s2 .opt-score { background: #f39c12; }
+  .option-btn.selected.s3 .opt-score { background: #2ecc71; }
+  .option-btn.selected.s4 .opt-score { background: #00b4d8; }
+  .opt-content { flex: 1; }
+  .opt-level { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 3px; }
+  .opt-text { font-size: 0.83rem; color: var(--text); line-height: 1.35; }
+  .opt-subtext { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; line-height: 1.3; }
+
+  /* SCORE BAR IN QUESTION */
+  .q-score-bar {
+    margin-top: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .q-score-label { font-size: 0.72rem; color: var(--text-muted); width: 80px; }
+  .q-score-track {
+    flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
+  }
+  .q-score-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+  .q-score-val { font-size: 0.72rem; font-weight: 700; color: var(--text); width: 40px; text-align: right; }
+
+  /* NAVIGATION */
+  .nav-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .btn {
+    padding: 11px 28px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-primary { background: var(--gold); color: var(--navy); }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: transparent; color: var(--text-muted); border: 1.5px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-teal { background: var(--teal); color: white; }
+  .btn-teal:hover { background: var(--teal-dark); }
+  .domain-completion {
+    font-size: 0.8rem; color: var(--text-muted);
+  }
+  .domain-completion span { color: var(--gold); font-weight: 700; }
+
+  /* RESULTS PAGE */
+  .results-page { display: none; padding: 32px 40px; }
+  .results-header {
+    text-align: center; margin-bottom: 40px;
+  }
+  .results-header h2 { font-size: 2rem; font-weight: 700; color: var(--text); }
+  .results-header p { font-size: 0.9rem; color: var(--text-muted); margin-top: 8px; }
+  .results-score-hero {
+    display: flex; justify-content: center; gap: 32px;
+    margin-bottom: 40px; flex-wrap: wrap;
+  }
+  .hero-metric {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 32px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .hero-metric .hm-val { font-size: 2.2rem; font-weight: 700; line-height: 1; }
+  .hero-metric .hm-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .hero-metric .hm-sub { font-size: 0.8rem; margin-top: 4px; }
+
+  .results-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+    margin-bottom: 36px;
+  }
+  .chart-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .chart-card h3 {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--gold); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .radar-wrap { height: 340px; position: relative; }
+
+  /* DOMAIN SCORES MINI */
+  .domain-scores-list { display: flex; flex-direction: column; gap: 12px; }
+  .ds-row {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ds-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+  .ds-name { font-size: 0.78rem; color: var(--text); width: 140px; flex-shrink: 0; }
+  .ds-bar-track {
+    flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden;
+    position: relative;
+  }
+  .ds-bar-actual { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+  .ds-bar-bench {
+    position: absolute; top: 0; height: 100%;
+    border-right: 2px solid rgba(201, 168, 76, 0.6);
+    background: transparent;
+  }
+  .ds-scores { font-size: 0.72rem; white-space: nowrap; }
+  .ds-actual { font-weight: 700; }
+  .ds-bench { color: var(--text-muted); }
+
+  /* GAP TABLE */
+  .gap-section {
+    margin-bottom: 36px;
+  }
+  .gap-section h3 {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--gold); margin-bottom: 16px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.8px;
+    color: var(--text-muted); padding: 10px 14px; text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 12px 14px; border-bottom: 1px solid rgba(30, 58, 110, 0.5); font-size: 0.82rem; }
+  tr:hover td { background: rgba(22, 32, 64, 0.5); }
+  .priority-badge {
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .p-critical { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+  .p-high { background: rgba(243, 156, 18, 0.2); color: #f39c12; }
+  .p-medium { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+  .p-low { background: rgba(0, 180, 216, 0.2); color: #00b4d8; }
+  .gap-bar {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .gap-val { font-weight: 700; width: 32px; }
+  .gap-mini-bar { width: 80px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .gap-mini-fill { height: 100%; border-radius: 3px; background: var(--red); }
+  .rec-text { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+
+  /* MATURITY LEVEL */
+  .maturity-banner {
+    border-radius: 12px; padding: 16px 24px;
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 32px;
+  }
+  .maturity-icon { font-size: 2rem; }
+  .maturity-name { font-size: 1.2rem; font-weight: 700; }
+  .maturity-desc { font-size: 0.82rem; margin-top: 3px; opacity: 0.8; }
+
+  .btn-row { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+
+  /* INTRO SCREEN */
+  .intro-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 40px;
+  }
+  .intro-icon { font-size: 4rem; margin-bottom: 20px; }
+  .intro-screen h2 { font-size: 2rem; font-weight: 700; margin-bottom: 12px; }
+  .intro-screen p { font-size: 0.95rem; color: var(--text-muted); max-width: 520px; line-height: 1.6; margin-bottom: 32px; }
+  .intro-tags { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 32px; }
+  .intro-tag {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 16px;
+    font-size: 0.75rem; color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .client-name-input {
+    background: var(--card-bg); border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 11px 16px;
+    color: var(--text); font-size: 0.9rem; width: 320px;
+    margin-bottom: 20px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .client-name-input:focus { border-color: var(--gold); }
+  .client-name-input::placeholder { color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>Banking Architecture Maturity Assessment</h1>
+    <p>BIAN Service Domain Model · TOGAF ADM · Industry Benchmarks</p>
+  </div>
+  <div class="header-badge">Client Workshop Tool</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-steps" id="progressSteps"></div>
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main" id="mainLayout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-score">
+      <h3>Overall Score</h3>
+      <div class="overall-score-ring">
+        <div class="score-circle" id="scoreCircle">
+          <span id="scoreCircleText">0</span>
+        </div>
+        <div class="score-info">
+          <div class="score-val" id="overallScoreVal">0.0</div>
+          <div class="score-label">out of 10.0</div>
+        </div>
+      </div>
+    </div>
+    <div class="domain-list" id="domainList"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content" id="contentArea">
+    <!-- Intro -->
+    <div class="intro-screen" id="introScreen">
+      <div class="intro-icon">🏦</div>
+      <h2>Architecture Maturity Assessment</h2>
+      <p>Evaluate your bank's technology architecture across 8 critical domains. Each answer is scored against industry benchmarks to reveal where you stand — and where to focus next.</p>
+      <div class="intro-tags">
+        <div class="intro-tag">📊 8 Domains</div>
+        <div class="intro-tag">❓ 24 Questions</div>
+        <div class="intro-tag">⏱ ~10 Minutes</div>
+        <div class="intro-tag">📈 Radar + Gap Analysis</div>
+      </div>
+      <input class="client-name-input" id="clientNameInput" type="text" placeholder="Client / Bank Name (optional)" />
+      <button class="btn btn-teal" onclick="startAssessment()" style="font-size:1rem;padding:14px 40px;">
+        Begin Assessment →
+      </button>
+    </div>
+    <!-- Questions injected here -->
+    <div id="questionArea" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- RESULTS PAGE -->
+<div class="results-page" id="resultsPage"></div>
+
+<script>
+const DOMAINS = [
+  {
+    id: 'core',
+    icon: '🏛',
+    name: 'Core Banking',
+    subtitle: 'BIAN Service Domain Coverage',
+    desc: 'Coverage and decomposition of core banking capabilities aligned to BIAN service domains.',
+    benchmark: 8.0,
+    questions: [
+      {
+        text: 'How would you describe your current core banking system architecture?',
+        options: [
+          { score: 1, level: 'Level 1 — Legacy', text: 'Monolithic core', sub: 'Single system handles all banking functions; changes require vendor releases' },
+          { score: 2, level: 'Level 2 — Modular', text: 'Partially separated modules', sub: 'Some products are isolated but share the same database and release cycle' },
+          { score: 3, level: 'Level 3 — Component-based', text: 'BIAN-aligned components', sub: 'Most capabilities map to dedicated components with defined interfaces' },
+          { score: 4, level: 'Level 4 — Composable', text: 'Independently deployable domains', sub: 'Each BIAN service domain is a deployable unit with its own API and data store' }
+        ]
+      },
+      {
+        text: 'How are banking products defined and managed?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Hard-coded in core system', sub: 'Product changes require code releases from the vendor' },
+          { score: 2, level: 'Level 2', text: 'Configurable via parameters', sub: 'Parameter tables allow some product configuration without code changes' },
+          { score: 3, level: 'Level 3', text: 'Business rules engine', sub: 'Configurable product engine with workflow automation and business rules' },
+          { score: 4, level: 'Level 4', text: 'Composable product catalogue', sub: 'Products assembled from reusable, versioned capability components' }
+        ]
+      },
+      {
+        text: 'How does your General Ledger integrate with banking operations?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Part of the monolith', sub: 'GL is embedded within the core banking system; no separation' },
+          { score: 2, level: 'Level 2', text: 'Nightly batch integration', sub: 'Separate GL system updated via end-of-day batch files' },
+          { score: 3, level: 'Level 3', text: 'Real-time API posting', sub: 'Transactions post to GL in real-time via API or messaging layer' },
+          { score: 4, level: 'Level 4', text: 'Event-sourced accounting', sub: 'Immutable accounting entries generated from every domain event; full audit trail' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'payments',
+    icon: '💳',
+    name: 'Payments',
+    subtitle: 'Payment Rails & Open Banking',
+    desc: 'Real-time payment capability, rail coverage, and PSD2/Open Banking readiness.',
+    benchmark: 9.0,
+    questions: [
+      {
+        text: 'What payment rails do you currently support?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Legacy batch only', sub: 'SWIFT MT / SEPA Credit Transfer — end-of-day settlement only' },
+          { score: 2, level: 'Level 2', text: 'Near real-time', sub: 'SEPA Credit Transfer with same-day value; basic SWIFT gpi tracking' },
+          { score: 3, level: 'Level 3', text: 'Real-time payments', sub: 'SEPA Instant (SCT Inst) and TIPS access; compliance with EU IPR mandate' },
+          { score: 4, level: 'Level 4', text: 'Multi-rail platform', sub: 'SEPA Inst, SWIFT gpi, domestic RT rails, cross-border with ISO 20022 MX end-to-end' }
+        ]
+      },
+      {
+        text: 'What is your Open Banking / PSD2 capability?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Not implemented', sub: 'No PSD2 API layer; TPP access not available or compliance exposure exists' },
+          { score: 2, level: 'Level 2', text: 'Compliance bolt-on', sub: 'Minimal AIS/PIS layer to meet regulatory deadline; limited functionality' },
+          { score: 3, level: 'Level 3', text: 'Dedicated PSD2 Hub', sub: 'AIS/PIS/CIAF APIs, consent management, basic developer onboarding' },
+          { score: 4, level: 'Level 4', text: 'Open Banking Platform', sub: 'Developer portal, FAPI 2.0, monetized APIs, dynamic linking, full consent lifecycle' }
+        ]
+      },
+      {
+        text: 'How do you screen payments for fraud and financial crime?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Manual / batch review', sub: 'Periodic spot checks; no real-time screening capability' },
+          { score: 2, level: 'Level 2', text: 'Rule-based screening', sub: 'Static thresholds and rules applied at initiation' },
+          { score: 3, level: 'Level 3', text: 'Real-time ML scoring', sub: 'Inline ML model scoring within payment flow; < 200ms response time' },
+          { score: 4, level: 'Level 4', text: 'Adaptive intelligence', sub: 'Behavioral biometrics, network graph analysis, adaptive model retraining' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'lending',
+    icon: '📋',
+    name: 'Lending & Credit',
+    subtitle: 'Origination, Scoring & Collateral',
+    desc: 'Loan origination automation, credit decision capability, and collateral management maturity.',
+    benchmark: 7.5,
+    questions: [
+      {
+        text: 'How is loan origination handled end-to-end?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Manual / paper-based', sub: 'Application forms, manual review, spreadsheet tracking' },
+          { score: 2, level: 'Level 2', text: 'Core banking origination', sub: 'Basic origination module in core banking with limited workflow automation' },
+          { score: 3, level: 'Level 3', text: 'Dedicated LOS with STP', sub: 'Workflow-driven LOS with straight-through processing for eligible applications' },
+          { score: 4, level: 'Level 4', text: 'AI-driven origination', sub: '70%+ STP, integrated bureau, instant decisions, mobile-first borrower journey' }
+        ]
+      },
+      {
+        text: 'What is your credit decision capability?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Manual credit committee', sub: 'Decisions made by credit officers; no automated scoring' },
+          { score: 2, level: 'Level 2', text: 'Rule-based scoring', sub: 'Static eligibility criteria and threshold rules applied to applications' },
+          { score: 3, level: 'Level 3', text: 'Statistical scoring models', sub: 'Logistic regression / scorecard models with credit bureau integration' },
+          { score: 4, level: 'Level 4', text: 'Dynamic ML scoring', sub: 'Real-time ML with alternative data, open banking feeds, DBR compliance engine' }
+        ]
+      },
+      {
+        text: 'How do you manage collateral and security interests?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Spreadsheet-based', sub: 'No system integration; manual tracking and valuation' },
+          { score: 2, level: 'Level 2', text: 'Core banking module', sub: 'Basic collateral registration within core banking; manual valuations' },
+          { score: 3, level: 'Level 3', text: 'Dedicated collateral system', sub: 'Automated valuation links, collateral coverage alerts, legal charge tracking' },
+          { score: 4, level: 'Level 4', text: 'Integrated collateral engine', sub: 'Real-time external valuation feeds, covenant monitoring, cross-collateralisation' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'integration',
+    icon: '🔗',
+    name: 'Integration & APIs',
+    subtitle: 'API Maturity & Event Architecture',
+    desc: 'Integration patterns, API governance, and microservices decomposition aligned to BIAN boundaries.',
+    benchmark: 8.0,
+    questions: [
+      {
+        text: 'What is your primary integration pattern across systems?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Point-to-point', sub: 'Direct database connections, file transfers, no central integration governance' },
+          { score: 2, level: 'Level 2', text: 'ESB / Middleware', sub: 'Centralised integration bus with message transformation and routing' },
+          { score: 3, level: 'Level 3', text: 'API-led connectivity', sub: 'System / Process / Experience API tiers with a managed API gateway' },
+          { score: 4, level: 'Level 4', text: 'Event-driven + API', sub: 'Kafka event backbone for async flows; BIAN-compliant REST APIs for synchronous' }
+        ]
+      },
+      {
+        text: 'How mature is your API management capability?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'No API management', sub: 'Ad hoc integration; no central gateway or API governance' },
+          { score: 2, level: 'Level 2', text: 'Basic API gateway', sub: 'Authentication and routing; no versioning, lifecycle management, or developer portal' },
+          { score: 3, level: 'Level 3', text: 'Full API lifecycle', sub: 'Versioning, documentation, rate limiting, monitoring, developer onboarding' },
+          { score: 4, level: 'Level 4', text: 'API platform', sub: 'Developer portal, analytics, monetization, sandbox environments, API marketplace' }
+        ]
+      },
+      {
+        text: 'How far has your microservices / domain decomposition progressed?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Monolithic applications', sub: 'No service decomposition; all functions in a single deployable unit' },
+          { score: 2, level: 'Level 2', text: 'Mixed architecture', sub: 'Some services extracted; monolith still handles majority of functions' },
+          { score: 3, level: 'Level 3', text: 'Domain-driven services', sub: 'Services aligned to business capabilities with defined contracts and boundaries' },
+          { score: 4, level: 'Level 4', text: 'BIAN-aligned microservices', sub: 'Each BIAN domain independently deployable; service mesh; contract testing' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'data',
+    icon: '📊',
+    name: 'Data & Analytics',
+    subtitle: 'Data Architecture & Intelligence',
+    desc: 'Data platform maturity, master data management, and analytics / AI capability.',
+    benchmark: 7.0,
+    questions: [
+      {
+        text: 'What is your data architecture and processing capability?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Operational data only', sub: 'No analytics layer; reporting extracted directly from operational systems' },
+          { score: 2, level: 'Level 2', text: 'Data warehouse', sub: 'Batch nightly loads to a central DW; T+1 reporting only' },
+          { score: 3, level: 'Level 3', text: 'Data lake + DW', sub: 'Batch and some streaming; near-real-time analytics; basic ML workloads' },
+          { score: 4, level: 'Level 4', text: 'Unified data platform', sub: 'Real-time streaming (Kafka/Flink), ML feature store, data mesh, lakehouse architecture' }
+        ]
+      },
+      {
+        text: 'How do you manage customer master data?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Siloed per system', sub: 'Each system has its own customer record; no single view' },
+          { score: 2, level: 'Level 2', text: 'Core banking as master', sub: 'Core banking is the de facto source; other systems sync nightly' },
+          { score: 3, level: 'Level 3', text: 'Dedicated MDM system', sub: 'Single customer view with real-time synchronisation across domains' },
+          { score: 4, level: 'Level 4', text: 'Enterprise data fabric', sub: 'Canonical customer model, event-sourced golden record, real-time cross-domain sync' }
+        ]
+      },
+      {
+        text: 'What is your analytics and business intelligence capability?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Excel / manual reports', sub: 'Manual extracts from core systems; no BI platform' },
+          { score: 2, level: 'Level 2', text: 'Standard BI dashboards', sub: 'Scheduled batch reports; business users dependent on IT for new reports' },
+          { score: 3, level: 'Level 3', text: 'Self-service BI', sub: 'Business users create reports; some real-time dashboards; basic predictive analytics' },
+          { score: 4, level: 'Level 4', text: 'AI-driven insights', sub: 'Predictive and prescriptive analytics, NLP, embedded ML in business workflows' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'cloud',
+    icon: '☁️',
+    name: 'Cloud & Infrastructure',
+    subtitle: 'Cloud-Native Readiness & DevOps',
+    desc: 'Cloud adoption, containerisation, CI/CD maturity, and disaster recovery posture.',
+    benchmark: 8.0,
+    questions: [
+      {
+        text: 'Where do you run your core banking systems?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'On-premise only', sub: 'Physical or virtualised servers in own data centre; no cloud adoption' },
+          { score: 2, level: 'Level 2', text: 'Virtualised on-premise', sub: 'VMware or similar; some lift-and-shift to IaaS for non-critical workloads' },
+          { score: 3, level: 'Level 3', text: 'Hybrid cloud', sub: 'Core banking on-premise; digital channels and analytics in cloud; private link connectivity' },
+          { score: 4, level: 'Level 4', text: 'Cloud-native', sub: 'Microservices on Kubernetes; multi-cloud or cloud-first strategy; data residency compliant' }
+        ]
+      },
+      {
+        text: 'What is your CI/CD and DevOps maturity?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Manual deployments', sub: 'No automation; manual build, test, and release processes' },
+          { score: 2, level: 'Level 2', text: 'Basic CI pipeline', sub: 'Automated builds and unit tests; manual deployment approval gates' },
+          { score: 3, level: 'Level 3', text: 'Full CI/CD pipeline', sub: 'Automated testing, staging deployments, blue/green or canary releases' },
+          { score: 4, level: 'Level 4', text: 'DevSecOps', sub: 'GitOps, automated SAST/DAST, progressive delivery, infrastructure-as-code, SRE practices' }
+        ]
+      },
+      {
+        text: 'What is your disaster recovery and business continuity posture?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Cold standby', sub: 'Manual failover; RTO > 24 hours; periodic tape backups' },
+          { score: 2, level: 'Level 2', text: 'Warm standby', sub: 'Secondary site with periodic data replication; RTO 4–8 hours' },
+          { score: 3, level: 'Level 3', text: 'Active-passive', sub: 'Automated failover with continuous replication; RTO < 4 hours; tested annually' },
+          { score: 4, level: 'Level 4', text: 'Active-active multi-region', sub: 'Zero-downtime failover; continuous replication; DORA compliant; chaos engineering' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'security',
+    icon: '🔒',
+    name: 'Security & Compliance',
+    subtitle: 'Zero Trust, AML & Regulatory',
+    desc: 'Identity and access management, financial crime prevention, and regulatory compliance posture.',
+    benchmark: 9.0,
+    questions: [
+      {
+        text: 'What is your identity and access management approach?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Basic username/password', sub: 'Manual provisioning; no MFA; shared accounts common' },
+          { score: 2, level: 'Level 2', text: 'LDAP / AD with RBAC', sub: 'Centralised directory; role-based access; some MFA deployed' },
+          { score: 3, level: 'Level 3', text: 'IAM platform', sub: 'SSO, MFA, privileged access management (PAM), automated provisioning' },
+          { score: 4, level: 'Level 4', text: 'Zero Trust architecture', sub: 'Continuous verification, micro-segmentation, just-in-time access, identity-based perimeter' }
+        ]
+      },
+      {
+        text: 'How do you handle AML and financial crime monitoring?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Manual transaction review', sub: 'Periodic spot checks; reactive case handling' },
+          { score: 2, level: 'Level 2', text: 'Rule-based transaction monitoring', sub: 'Static thresholds; scheduled screening against sanction lists' },
+          { score: 3, level: 'Level 3', text: 'Automated AML system', sub: 'Real-time alerts, case management workflow, SAR generation, tunable rules' },
+          { score: 4, level: 'Level 4', text: 'AI-powered financial crime', sub: 'Behavioral analytics, network graph analysis, adaptive ML models, low false-positive rates' }
+        ]
+      },
+      {
+        text: 'What is your data privacy and regulatory compliance posture?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Ad hoc / undocumented', sub: 'No formal data privacy programme; compliance gaps likely' },
+          { score: 2, level: 'Level 2', text: 'Policy-based', sub: 'Documented policies; manually enforced; periodic audits' },
+          { score: 3, level: 'Level 3', text: 'Technical controls', sub: 'Encryption at rest/transit, access logging, data classification, PCI-DSS compliant' },
+          { score: 4, level: 'Level 4', text: 'Privacy by design', sub: 'Automated consent management, right-to-erasure workflows, continuous compliance monitoring' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'observability',
+    icon: '📡',
+    name: 'Observability & Ops',
+    subtitle: 'Monitoring, Alerting & Audit',
+    desc: 'Operational visibility, incident management maturity, and audit/regulatory reporting capability.',
+    benchmark: 7.0,
+    questions: [
+      {
+        text: 'What is your monitoring and observability capability?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Reactive — user-reported', sub: 'Issues discovered when customers or staff report them; no proactive monitoring' },
+          { score: 2, level: 'Level 2', text: 'Basic infrastructure monitoring', sub: 'Server metrics, uptime checks, email alerts; no application-level visibility' },
+          { score: 3, level: 'Level 3', text: 'APM and distributed tracing', sub: 'Application performance monitoring, distributed traces, custom business dashboards' },
+          { score: 4, level: 'Level 4', text: 'Full observability + AIOps', sub: 'Unified logs/traces/metrics, predictive alerting, automated anomaly detection, SLO tracking' }
+        ]
+      },
+      {
+        text: 'How do you manage incidents and service disruptions?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Ad hoc — email and calls', sub: 'No formal incident process; escalation depends on individual knowledge' },
+          { score: 2, level: 'Level 2', text: 'ITIL-based ticketing', sub: 'Incident management system; defined P1/P2/P3 priorities and escalation paths' },
+          { score: 3, level: 'Level 3', text: 'Automated alerting with runbooks', sub: 'Structured on-call, automated incident creation, runbooks for common scenarios' },
+          { score: 4, level: 'Level 4', text: 'SRE practices', sub: 'Error budgets, blameless post-mortems, chaos engineering, automated remediation' }
+        ]
+      },
+      {
+        text: 'What is your audit trail and regulatory reporting capability?',
+        options: [
+          { score: 1, level: 'Level 1', text: 'Manual — on-demand extracts', sub: 'Reports pulled manually when requested by regulators or auditors' },
+          { score: 2, level: 'Level 2', text: 'Scheduled batch reports', sub: 'Automated scheduled reports; some manual validation before submission' },
+          { score: 3, level: 'Level 3', text: 'Automated regulatory reporting', sub: 'Automated report generation with near-real-time feeds; audit log system' },
+          { score: 4, level: 'Level 4', text: 'Continuous compliance', sub: 'Real-time regulatory data feeds, immutable audit trail, automated breach detection' }
+        ]
+      }
+    ]
+  }
+];
+
+const RECOMMENDATIONS = {
+  core: [
+    'Decompose monolithic core into BIAN-aligned service domains; prioritize high-change areas (Payments, Lending) first',
+    'Introduce a product configurator engine to reduce time-to-market for new products from months to days',
+    'Implement real-time GL posting via an event-driven accounting ledger to enable real-time balance sheets'
+  ],
+  payments: [
+    'Achieve SEPA Instant (SCT Inst) compliance — EU IPR mandate requires reachability for all PSPs',
+    'Build a dedicated PSD2 hub with FAPI 2.0 and Berlin Group NextGenPSD2 APIs to unlock Open Banking revenue',
+    'Deploy inline ML fraud scoring (< 200ms P95) to meet SEPA Instant 10-second end-to-end SLA'
+  ],
+  lending: [
+    'Implement a dedicated Loan Origination System (LOS) with BPMN workflow and credit bureau integration',
+    'Deploy statistical scorecard models as a minimum; target ML-based dynamic scoring for 65%+ STP rates',
+    'Integrate collateral management with external valuation feeds to automate LTV calculations and covenant monitoring'
+  ],
+  integration: [
+    'Adopt API-led connectivity (System → Process → Experience API tiers) to decouple channels from core systems',
+    'Implement an event streaming backbone (Kafka) for domain events — enables real-time processing and decouples producers from consumers',
+    'Align microservices boundaries to BIAN service domains to prevent capability overlap and enable independent deployability'
+  ],
+  data: [
+    'Build a data lake alongside the existing DW to enable ML workloads and near-real-time analytics',
+    'Implement a Master Data Management system for a single customer view — critical for cross-sell and regulatory reporting',
+    'Invest in self-service BI to reduce IT dependency for reporting; target 70% of reports generated by business users'
+  ],
+  cloud: [
+    'Containerise new development workloads on Kubernetes; migrate stateless services to cloud progressively',
+    'Implement a full CI/CD pipeline with automated testing gates to reduce deployment risk and increase release frequency',
+    'Upgrade DR posture to active-passive with automated failover to meet DORA requirements (RTO < 4 hours, RPO < 1 hour)'
+  ],
+  security: [
+    'Deploy a Zero Trust architecture model — remove implicit network trust; verify every identity and device continuously',
+    'Upgrade AML to a real-time transaction monitoring platform with ML-based alert scoring to reduce false positives',
+    'Implement automated consent management and data classification to meet GDPR right-to-erasure obligations'
+  ],
+  observability: [
+    'Deploy an APM stack (Prometheus/Grafana + Jaeger/OpenTelemetry) across all critical banking services',
+    'Formalise SRE practices: define SLOs, implement error budgets, and run quarterly chaos engineering exercises',
+    'Build an automated regulatory reporting pipeline with immutable audit trail to reduce manual effort and compliance risk'
+  ]
+};
+
+// STATE
+let currentDomain = -1; // -1 = intro
+let answers = {}; // { domainId: [score, score, score] }
+let clientName = '';
+
+function getScore(domainId) {
+  const a = answers[domainId];
+  if (!a || a.filter(x => x > 0).length < 3) return null;
+  const raw = a.reduce((s, v) => s + v, 0); // 3–12
+  return ((raw - 3) / 9) * 10; // normalize to 0–10
+}
+
+function getOverallScore() {
+  let total = 0, count = 0;
+  DOMAINS.forEach(d => {
+    const s = getScore(d.id);
+    if (s !== null) { total += s; count++; }
+  });
+  return count > 0 ? total / count : 0;
+}
+
+function getScoreColor(score, bench) {
+  const gap = bench - score;
+  if (gap <= 0) return '#2ecc71';
+  if (gap <= 2) return '#f39c12';
+  if (gap <= 4) return '#e67e22';
+  return '#e74c3c';
+}
+
+function initUI() {
+  // Build progress steps
+  const ps = document.getElementById('progressSteps');
+  ps.innerHTML = '';
+  DOMAINS.forEach((d, i) => {
+    if (i > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'step-connector';
+      ps.appendChild(conn);
+    }
+    const dot = document.createElement('div');
+    dot.className = 'step-dot';
+    dot.id = `step-${i}`;
+    dot.innerHTML = `<div class="dot">${i+1}</div><div class="label">${d.name}</div>`;
+    dot.onclick = () => { if (i <= currentDomain + 1) goToDomain(i); };
+    ps.appendChild(dot);
+  });
+  // Results step
+  const conn = document.createElement('div');
+  conn.className = 'step-connector';
+  ps.appendChild(conn);
+  const rDot = document.createElement('div');
+  rDot.className = 'step-dot';
+  rDot.id = 'step-results';
+  rDot.innerHTML = `<div class="dot">📊</div><div class="label">Results</div>`;
+  ps.appendChild(rDot);
+
+  // Build domain list
+  const dl = document.getElementById('domainList');
+  dl.innerHTML = '';
+  DOMAINS.forEach((d, i) => {
+    const item = document.createElement('div');
+    item.className = 'domain-item';
+    item.id = `domain-item-${i}`;
+    item.innerHTML = `
+      <div class="domain-icon">${d.icon}</div>
+      <div class="domain-name">${d.name}</div>
+      <div class="domain-score-badge" id="domain-badge-${d.id}">—</div>
+    `;
+    item.onclick = () => { if (i <= currentDomain + 1) goToDomain(i); };
+    dl.appendChild(item);
+  });
+}
+
+function updateSidebarScore() {
+  const overall = getOverallScore();
+  document.getElementById('overallScoreVal').textContent = overall.toFixed(1);
+  const pct = (overall / 10) * 100;
+  const circle = document.getElementById('scoreCircle');
+  const color = overall >= 7 ? '#2ecc71' : overall >= 5 ? '#f39c12' : '#e74c3c';
+  circle.style.background = `conic-gradient(${color} ${pct * 3.6}deg, var(--border) 0deg)`;
+  document.getElementById('scoreCircleText').textContent = Math.round(overall);
+
+  DOMAINS.forEach((d, i) => {
+    const s = getScore(d.id);
+    const badge = document.getElementById(`domain-badge-${d.id}`);
+    const item = document.getElementById(`domain-item-${i}`);
+    if (s !== null) {
+      badge.textContent = s.toFixed(1);
+      badge.className = 'domain-score-badge filled';
+      badge.style.background = getScoreColor(s, d.benchmark) + '33';
+      badge.style.color = getScoreColor(s, d.benchmark);
+      if (item && !item.classList.contains('active')) item.classList.add('done');
+    } else {
+      badge.textContent = '—';
+      badge.className = 'domain-score-badge';
+      badge.style.background = '';
+      badge.style.color = '';
+    }
+  });
+}
+
+function updateProgress() {
+  const total = DOMAINS.length;
+  const done = Object.keys(answers).filter(k => answers[k] && answers[k].filter(x => x > 0).length === 3).length;
+  const pct = currentDomain >= 0 ? ((currentDomain + 1) / (total + 1)) * 100 : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  DOMAINS.forEach((d, i) => {
+    const dot = document.getElementById(`step-${i}`);
+    if (!dot) return;
+    const s = getScore(d.id);
+    dot.className = 'step-dot';
+    if (i === currentDomain) dot.classList.add('active');
+    else if (s !== null) dot.classList.add('done');
+  });
+
+  DOMAINS.forEach((d, i) => {
+    const item = document.getElementById(`domain-item-${i}`);
+    if (!item) return;
+    item.className = 'domain-item';
+    if (i === currentDomain) item.classList.add('active');
+    else if (getScore(d.id) !== null) item.classList.add('done');
+  });
+}
+
+function startAssessment() {
+  clientName = document.getElementById('clientNameInput').value || 'Client';
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('questionArea').style.display = 'block';
+  goToDomain(0);
+}
+
+function goToDomain(idx) {
+  currentDomain = idx;
+  updateProgress();
+  renderDomain(idx);
+}
+
+function renderDomain(idx) {
+  const d = DOMAINS[idx];
+  if (!answers[d.id]) answers[d.id] = [0, 0, 0];
+
+  const answered = answers[d.id].filter(x => x > 0).length;
+  const qa = document.getElementById('questionArea');
+
+  let html = `
+    <div class="domain-header">
+      <div class="domain-header-left">
+        <h2>${d.icon} ${d.name}</h2>
+        <div class="domain-subtitle">${d.subtitle}</div>
+        <div class="domain-desc">${d.desc}</div>
+      </div>
+      <div class="domain-progress-pill">Domain <span>${idx + 1}</span> of ${DOMAINS.length}</div>
+    </div>
+  `;
+
+  d.questions.forEach((q, qi) => {
+    const qAnswered = answers[d.id][qi] > 0;
+    html += `
+      <div class="question-card ${qAnswered ? 'answered' : ''}" id="qcard-${d.id}-${qi}">
+        <div class="q-header">
+          <div class="q-num">Q${qi + 1}</div>
+          <div class="q-text">${q.text}</div>
+          <div class="q-answered-badge">✓ Answered</div>
+        </div>
+        <div class="options-grid">
+    `;
+    q.options.forEach((opt, oi) => {
+      const isSelected = answers[d.id][qi] === opt.score;
+      html += `
+        <div class="option-btn ${isSelected ? 'selected' : ''} s${opt.score}"
+             onclick="selectAnswer('${d.id}', ${qi}, ${opt.score})">
+          <div class="opt-score">${opt.score}</div>
+          <div class="opt-content">
+            <div class="opt-level">${opt.level}</div>
+            <div class="opt-text">${opt.text}</div>
+            <div class="opt-subtext">${opt.sub}</div>
+          </div>
+        </div>
+      `;
+    });
+    html += `</div>`;
+
+    if (qAnswered) {
+      const score = answers[d.id][qi];
+      const pct = ((score - 1) / 3) * 100;
+      const color = score === 1 ? '#e74c3c' : score === 2 ? '#f39c12' : score === 3 ? '#2ecc71' : '#00b4d8';
+      html += `
+        <div class="q-score-bar">
+          <div class="q-score-label">Your score</div>
+          <div class="q-score-track"><div class="q-score-fill" style="width:${pct}%;background:${color}"></div></div>
+          <div class="q-score-val" style="color:${color}">${score}/4</div>
+        </div>
+      `;
+    }
+    html += `</div>`;
+  });
+
+  const isComplete = answers[d.id].filter(x => x > 0).length === 3;
+  const isLast = idx === DOMAINS.length - 1;
+  html += `
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToDomain(${idx - 1})" ${idx === 0 ? 'disabled' : ''}>
+        ← Previous
+      </button>
+      <div class="domain-completion">
+        <span>${answers[d.id].filter(x => x > 0).length}</span> of 3 questions answered
+      </div>
+      <button class="btn btn-primary" id="nextBtn"
+        onclick="${isLast ? 'showResults()' : `goToDomain(${idx + 1})`}"
+        ${!isComplete ? 'disabled' : ''}>
+        ${isLast ? '📊 View Results' : 'Next Domain →'}
+      </button>
+    </div>
+  `;
+
+  qa.innerHTML = html;
+  qa.scrollTop = 0;
+}
+
+function selectAnswer(domainId, qi, score) {
+  answers[domainId][qi] = score;
+  updateSidebarScore();
+  renderDomain(currentDomain);
+}
+
+function showResults() {
+  document.getElementById('mainLayout').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  const rp = document.getElementById('resultsPage');
+  rp.style.display = 'block';
+  rp.innerHTML = buildResults();
+  renderRadar();
+}
+
+function buildResults() {
+  const overall = getOverallScore();
+  const client = clientName;
+
+  // Maturity level
+  let matLevel, matDesc, matColor, matIcon;
+  if (overall >= 8) {
+    matLevel = 'Digital Leader'; matIcon = '🏆';
+    matDesc = 'Architecture is at or exceeding industry benchmarks. Focus on continuous innovation and maintaining the edge.';
+    matColor = 'linear-gradient(135deg, rgba(46,204,113,0.2), rgba(0,180,216,0.1))';
+  } else if (overall >= 6) {
+    matLevel = 'Progressing'; matIcon = '📈';
+    matDesc = 'Architecture is largely modern with specific gaps. A targeted investment in 2–3 priority domains will close the benchmark gap.';
+    matColor = 'linear-gradient(135deg, rgba(0,180,216,0.2), rgba(52,152,219,0.1))';
+  } else if (overall >= 4) {
+    matLevel = 'Developing'; matIcon = '🔨';
+    matDesc = 'Foundation exists but significant capability gaps are limiting agility and competitive positioning. Prioritise integration and core modernisation.';
+    matColor = 'linear-gradient(135deg, rgba(243,156,18,0.2), rgba(230,126,34,0.1))';
+  } else {
+    matLevel = 'Legacy-Bound'; matIcon = '⚠️';
+    matDesc = 'Architecture is largely legacy. Immediate action is required to address regulatory risk and competitive disadvantage.';
+    matColor = 'linear-gradient(135deg, rgba(231,76,60,0.2), rgba(192,57,43,0.1))';
+  }
+
+  // Gap analysis
+  const gaps = DOMAINS.map(d => ({
+    domain: d,
+    actual: getScore(d.id) || 0,
+    bench: d.benchmark,
+    gap: d.benchmark - (getScore(d.id) || 0)
+  })).sort((a, b) => b.gap - a.gap);
+
+  let gapRows = '';
+  gaps.forEach(g => {
+    const prio = g.gap >= 4 ? ['Critical', 'p-critical'] : g.gap >= 2.5 ? ['High', 'p-high'] : g.gap >= 1 ? ['Medium', 'p-medium'] : ['On Track', 'p-low'];
+    const recs = RECOMMENDATIONS[g.domain.id];
+    const rec = g.gap > 0 ? (g.gap >= 3 ? recs[0] : g.gap >= 1.5 ? recs[1] : recs[2]) : 'Continue investing to maintain digital leadership position.';
+    const gapPct = Math.max(0, (g.gap / 10) * 100);
+    gapRows += `
+      <tr>
+        <td><b>${g.domain.icon} ${g.domain.name}</b></td>
+        <td style="color:${getScoreColor(g.actual, g.bench)};font-weight:700">${g.actual.toFixed(1)}</td>
+        <td style="color:var(--gold)">${g.bench.toFixed(1)}</td>
+        <td>
+          <div class="gap-bar">
+            <div class="gap-val" style="color:${g.gap > 2 ? '#e74c3c' : '#f39c12'}">${g.gap > 0 ? '+' + g.gap.toFixed(1) : '✓'}</div>
+            <div class="gap-mini-bar"><div class="gap-mini-fill" style="width:${gapPct}%;background:${getScoreColor(g.actual, g.bench)}"></div></div>
+          </div>
+        </td>
+        <td><span class="priority-badge ${prio[1]}">${prio[0]}</span></td>
+        <td class="rec-text">${rec}</td>
+      </tr>
+    `;
+  });
+
+  // Domain scores bars
+  let domBars = '';
+  DOMAINS.forEach(d => {
+    const s = getScore(d.id) || 0;
+    const pct = (s / 10) * 100;
+    const benchPct = (d.benchmark / 10) * 100;
+    domBars += `
+      <div class="ds-row">
+        <div class="ds-icon">${d.icon}</div>
+        <div class="ds-name">${d.name}</div>
+        <div class="ds-bar-track">
+          <div class="ds-bar-actual" style="width:${pct}%;background:${getScoreColor(s, d.benchmark)}"></div>
+          <div class="ds-bar-bench" style="width:${benchPct}%"></div>
+        </div>
+        <div class="ds-scores">
+          <span class="ds-actual" style="color:${getScoreColor(s, d.benchmark)}">${s.toFixed(1)}</span>
+          <span class="ds-bench"> / ${d.benchmark.toFixed(1)}</span>
+        </div>
+      </div>
+    `;
+  });
+
+  const now = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  return `
+    <div class="header" style="margin-bottom:0">
+      <div class="header-left">
+        <h1>Architecture Maturity Assessment Results</h1>
+        <p>${client} · ${now}</p>
+      </div>
+      <button class="btn btn-secondary" onclick="restart()">← New Assessment</button>
+    </div>
+
+    <div style="padding:32px 40px">
+      <div class="maturity-banner" style="background:${matColor};border:1px solid var(--border)">
+        <div class="maturity-icon">${matIcon}</div>
+        <div>
+          <div class="maturity-name">${matLevel}</div>
+          <div class="maturity-desc">${matDesc}</div>
+        </div>
+      </div>
+
+      <div class="results-score-hero">
+        <div class="hero-metric">
+          <div class="hm-val" style="color:${getScoreColor(overall, 8)}">${overall.toFixed(1)}</div>
+          <div class="hm-label">Overall Score</div>
+          <div class="hm-sub" style="color:var(--text-muted)">out of 10.0</div>
+        </div>
+        <div class="hero-metric">
+          <div class="hm-val" style="color:var(--gold)">8.1</div>
+          <div class="hm-label">Industry Benchmark</div>
+          <div class="hm-sub" style="color:var(--text-muted)">Tier-1 Digital Bank</div>
+        </div>
+        <div class="hero-metric">
+          <div class="hm-val" style="color:${(8.1 - overall) > 2 ? '#e74c3c' : '#f39c12'}">${Math.max(0, 8.1 - overall).toFixed(1)}</div>
+          <div class="hm-label">Gap to Benchmark</div>
+          <div class="hm-sub" style="color:var(--text-muted)">points to close</div>
+        </div>
+        <div class="hero-metric">
+          <div class="hm-val" style="color:var(--teal)">${gaps.filter(g => g.gap >= 3).length}</div>
+          <div class="hm-label">Critical Gaps</div>
+          <div class="hm-sub" style="color:var(--text-muted)">requiring priority action</div>
+        </div>
+      </div>
+
+      <div class="results-grid">
+        <div class="chart-card">
+          <h3>📊 Radar Assessment — Actual vs Benchmark</h3>
+          <div class="radar-wrap"><canvas id="radarChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>📈 Domain Scores vs Industry Benchmark</h3>
+          <div class="domain-scores-list">${domBars}</div>
+          <div style="margin-top:16px;font-size:0.72rem;color:var(--text-muted);display:flex;gap:16px;align-items:center">
+            <span>━ Actual score</span>
+            <span style="color:var(--gold)">╎ Industry benchmark</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gap-section">
+        <h3>🎯 Gap Analysis & Priority Recommendations</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Domain</th>
+              <th>Actual</th>
+              <th>Benchmark</th>
+              <th>Gap</th>
+              <th>Priority</th>
+              <th>Recommended Action</th>
+            </tr>
+          </thead>
+          <tbody>${gapRows}</tbody>
+        </table>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="restart()">Start New Assessment</button>
+        <button class="btn btn-teal" onclick="window.print()">🖨 Print / Export PDF</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderRadar() {
+  const ctx = document.getElementById('radarChart');
+  if (!ctx) return;
+
+  const labels = DOMAINS.map(d => d.name);
+  const actualData = DOMAINS.map(d => getScore(d.id) || 0);
+  const benchData = DOMAINS.map(d => d.benchmark);
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Your Score',
+          data: actualData,
+          backgroundColor: 'rgba(0, 180, 216, 0.15)',
+          borderColor: '#00b4d8',
+          borderWidth: 2,
+          pointBackgroundColor: '#00b4d8',
+          pointRadius: 4,
+        },
+        {
+          label: 'Industry Benchmark',
+          data: benchData,
+          backgroundColor: 'rgba(201, 168, 76, 0.08)',
+          borderColor: 'rgba(201, 168, 76, 0.7)',
+          borderWidth: 2,
+          borderDash: [6, 3],
+          pointBackgroundColor: 'rgba(201, 168, 76, 0.7)',
+          pointRadius: 3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          min: 0, max: 10,
+          ticks: {
+            stepSize: 2,
+            color: '#8892a4',
+            font: { size: 10 },
+            backdropColor: 'transparent'
+          },
+          grid: { color: 'rgba(30, 58, 110, 0.8)' },
+          angleLines: { color: 'rgba(30, 58, 110, 0.6)' },
+          pointLabels: {
+            color: '#e8eaf0',
+            font: { size: 11, weight: '600' }
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: '#8892a4',
+            font: { size: 11 },
+            padding: 16,
+            usePointStyle: true
+          }
+        }
+      }
+    }
+  });
+}
+
+function restart() {
+  answers = {};
+  currentDomain = -1;
+  clientName = '';
+  document.getElementById('resultsPage').style.display = 'none';
+  document.getElementById('resultsPage').innerHTML = '';
+  document.getElementById('mainLayout').style.display = 'flex';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('questionArea').style.display = 'none';
+  document.getElementById('introScreen').style.display = 'flex';
+  document.getElementById('clientNameInput').value = '';
+  updateSidebarScore();
+  updateProgress();
+}
+
+// INIT
+initUI();
+updateSidebarScore();
+</script>
+</body>
+</html>

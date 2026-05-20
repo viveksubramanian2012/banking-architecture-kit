@@ -1,0 +1,46 @@
+{
+  "skill_name": "architecture",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to design a payments modernisation architecture for a mid-size European bank. They currently run a legacy SWIFT/SEPA payment hub from 2008. They want to move to real-time payments (SEPA Inst, TARGET2 compliance) and open banking (PSD2). Can you give me an architecture diagram and a brief solution design covering the key components, BIAN domains, and integration approach? We'll present this to their CTO next week.",
+      "expected_output": "Architecture diagram (HTML) + solution design covering BIAN domain mapping, integration patterns, ADRs, and SEPA Instant handling",
+      "files": [],
+      "expectations": [
+        "Identifies and names at least 3 relevant BIAN Service Domains",
+        "Recommends an event-driven pattern for payment notifications or async processing",
+        "Includes an architecture diagram or structured component breakdown",
+        "Addresses PSD2 or open banking API exposure",
+        "Documents at least one Architecture Decision Record",
+        "Mentions SEPA Instant or real-time payment handling specifically"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We're responding to an RFP from a Gulf bank (UAE) for a digital lending transformation. The bank wants end-to-end loan origination — retail and SME — with straight-through processing, credit scoring integration, and a mobile-first borrower experience. I need the technical architecture section of our response: what components we'd deploy, which BIAN domains are covered, and how we'd integrate with their existing T24 core banking system.",
+      "expected_output": "RFP-ready technical architecture section with BIAN domain mapping, T24 integration approach, STP targets, mobile architecture",
+      "files": [],
+      "expectations": [
+        "Maps requirements to BIAN lending domains (Consumer Loan, Credit Management, or Collateral Management at minimum)",
+        "Addresses T24/Temenos integration specifically",
+        "Covers both retail and SME origination in scope",
+        "Includes mobile-first channel architecture consideration",
+        "Structures the response in a format suitable for an RFP technical section",
+        "Mentions straight-through processing (STP) and automation targets"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I just had a client meeting and they showed me this enterprise core banking architecture diagram. I want to understand what BIAN service domains are covered versus missing, and whether there are any architectural gaps I should flag before the next meeting. The diagram shows: Channels (Mobile, Web, Branch, ATM), Edge Security (WAF, API Gateway, OAuth), Application Services (Customer Onboarding/KYC, Account Management, Deposits, Loans, Payments, Cards, Trade Finance, Fee Management, Interest Pricing, Alerts, Customer Comms), Integration Layer (ESB, Kafka, Event Streaming, API Management), Core Banking Engine with ACID-compliant DB, Data Layer (Data Lake, DW, Cache, Search), Infrastructure (K8s, Docker, Service Mesh, CI/CD).",
+      "expected_output": "Structured gap analysis: BIAN domains present vs missing, severity ratings, architectural observations, client questions",
+      "files": [],
+      "expectations": [
+        "Maps diagram components to named BIAN Service Domains",
+        "Identifies at least 3 BIAN domains that are missing or unclear",
+        "Flags risk/compliance domains (AML, Fraud Detection, or Regulatory Reporting) as gaps",
+        "Comments on architectural pattern choices",
+        "Provides specific, actionable questions to ask the client"
+      ]
+    }
+  ]
+}
